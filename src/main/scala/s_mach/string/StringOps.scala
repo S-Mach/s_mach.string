@@ -37,15 +37,15 @@ object StringOps {
   /** @return string with all replacements. For each (find*,replace) pair, all occurrences of find are substituted with replace. Ensures recursive replacements cannot occur. */
   def findAllReplace(
     s: String,
-    fr: TraversableOnce[(String*, String)],
-    caseSensitive: Boolean = true
+    caseSensitive: Boolean = true,
+    fr: (String*, String)*
   ) : String = ???
 
-  /** @return string with all occurrences of all strings in the Set replaced with the paired string. Ensures recursive replacements cannot occur. */
+  /** @return string with all replacements. For each (find*,replace) pair, all occurrences of find as a word are substituted with replace. Ensures recursive replacements cannot occur. */
   def findAllReplaceWords(
     s: String,
-    fr: TraversableOnce[(TraversableOnce[String], String)],
-    caseSensitive: Boolean = true
+    caseSensitive: Boolean = true,
+    fr: (String*, String)*
   )(implicit splitter:WordSplitter) : String = ???
 
   /** @return string with all whitespace collapsed to a single space and all leading and trailing whitespace trimmed */
@@ -85,5 +85,5 @@ object StringOps {
   def convert[A](s: String, f: A => String) : Option[A] = ???
 
   /** @return all words contained in string */
-  def split(s: String)(implicit splitter:WordSplitter) : Iterator[String] = splitter.split(s)
+  def toWords(s: String)(implicit splitter:WordSplitter) : Iterator[String] = splitter.split(s)
 }
