@@ -5,11 +5,11 @@ trait WordSplitter {
 }
 
 class WhitespaceWordSplitter extends WordSplitter {
-  override def split(s: String): Iterator[String] = ???
+  override def split(s: String): Iterator[String] = s.split("( )+").iterator
 }
 
 class WhitespaceOrUnderscoreWordSplitter extends WordSplitter {
-  override def split(s: String): Iterator[String] = ???
+  override def split(s: String): Iterator[String] = s.split("(( )+)|(_)+").filter(!_.isEmpty).iterator
 }
 
 class CamelCaseWordSplitter extends WordSplitter {
