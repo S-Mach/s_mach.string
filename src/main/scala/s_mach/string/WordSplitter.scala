@@ -13,7 +13,15 @@ class WhitespaceOrUnderscoreWordSplitter extends WordSplitter {
 }
 
 class CamelCaseWordSplitter extends WordSplitter {
-  override def split(s: String): Iterator[String] = ???
+
+  override def split(s: String): Iterator[String] = {
+    val accumulator = List[String]()
+    val prefix = "[a-z_]+".r
+    val word = "([A-Z]+[a-z_0-9]*)".r
+    prefix.findPrefixOf(s).getOrElse("") :: accumulator
+    for(matchedWord <- word.findAllMatchIn(s)) matchedWord :: accumulator
+    accumulator.iterator
+  }
 }
 
 class PascalCaseWordSplitter extends WordSplitter {

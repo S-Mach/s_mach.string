@@ -54,7 +54,7 @@ object StringOps {
   def collapseWhitespace(s: String) : String = ???
 
   /** @return the first character to uppercase and the remaining characters to lowercase */
-  def toProperCase(s: String) : String = s.head.toUpper + s.tail
+  def toProperCase(s: String) : String = s.capitalize
 
   /** @return all whitespace collapsed, each word in proper case */
   def toTitleCase(s: String)(implicit words:WordSplitter) : String = ???
@@ -70,14 +70,8 @@ object StringOps {
 
   /** @return string with all lines indented by n occurrences of s */
   def indent(s: String, n: Int, spacer: String = " ") : String = {
-    s.split("\n").map {case line => spacer * n + line}.mkString("\n")
-  }
-
-  private def attemptParse[A](s : String, parser : String => A) : Option[A] = {
-    parser(s) match {
-      case success : A => Some(success)
-      case _ => None
-    }
+    //s.split("\n").map {case line => spacer * n + line}.mkString("\n")
+    s.linesWithSeparators.map {case line => spacer * n + line}.mkString
   }
 
   /** @return None if string length is 0 OR Some(String) if length > 0 */
@@ -86,17 +80,20 @@ object StringOps {
   }
 
   /** @return None if String fails to convert to Double OR Some(Double) if string can be converted to a valid Double value */
-  def toDoubleOpt(s: String) : Option[Double] = attemptParse[Double](s, java.lang.Double.parseDouble)
+  def toDoubleOpt(s: String) : Option[Double] = convert[Double](s, java.lang.Double.parseDouble)
 
   /** @return None if String fails to convert to Long OR Some(Long) if string can be converted to a valid Long value */
-  def toLongOpt(s: String) : Option[Long] = attemptParse[Long](s, java.lang.Long.parseLong)
+  def toLongOpt(s: String) : Option[Long] = convert[Long](s, java.lang.Long.parseLong)
 
   /** @return None if String fails to convert to Int OR Some(Int) if string can be converted to a valid Int value */
-  def toIntOpt(s: String) : Option[Int] = attemptParse[Int](s, java.lang.Integer.parseInt)
+  def toIntOpt(s: String) : Option[Int] = convert[Int](s, java.lang.Integer.parseInt)
 
   /** @return None if String fails to convert to A OR Some(A) if string can be converted to a valid A value */
-  def convert[A](s: String, f: A => String) : Option[A] = {
-    None //TODO I think you mean String => A ?
+  def convert[A](s: String, f: String => A) : Option[A] = {
+    f(s) match {
+      case success : A => Some(success)
+      case _ => None
+    }
   }
 
   /** @return all words contained in string */

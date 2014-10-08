@@ -20,5 +20,10 @@ class StringOps$Test extends FlatSpec with Matchers{
         |    int a = 10;
         |    hello!
       """.stripMargin
+    indent(initString,4," ") should not be
+    """
+      |int a = 10;
+      |hello!
+    """.stripMargin
   }
 }
