@@ -90,9 +90,10 @@ object StringOps {
 
   /** @return None if String fails to convert to A OR Some(A) if string can be converted to a valid A value */
   def convert[A](s: String, f: String => A) : Option[A] = {
-    f(s) match {
-      case success : A => Some(success)
-      case _ => None
+    try {
+      Some(f(s))
+    } catch {
+      case e : Exception => None
     }
   }
 
