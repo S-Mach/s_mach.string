@@ -73,8 +73,8 @@ object StringOps {
   def indent(s: String, n: Int, spacer: String = " ") : String = {
     // TODO: use a StringBuilder here - didn't know about linesWithSeparators - nice find!
     val builder : StringBuilder = mutable.StringBuilder.newBuilder
-    s.linesWithSeparators.map {
-      case line => builder.append(spacer * n + line)
+    s.linesWithSeparators.foreach {
+      line => builder.append(spacer * n + line)
     }
     builder.toString()
   }
