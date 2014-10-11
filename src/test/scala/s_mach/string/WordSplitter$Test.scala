@@ -1,7 +1,7 @@
 package s_mach.string
 
 import org.scalatest.{Matchers, FlatSpec}
-import WordSplitter.{Whitespace, WhitespaceOrUnderscore}
+import s_mach.string.WordSplitter.{PascalCase, Whitespace, WhitespaceOrUnderscore, CamelCase}
 /**
  * Splitter tests
  *
@@ -57,6 +57,34 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "testing"
       )
     )
+  }
+
+  "A camel case word splitter" should "separate a camelCased string into words" in {
+    CamelCase.split(simpleCamelCase).toStream should contain allOf (
+      "simple",
+      "Camel",
+      "Case"
+    )
+    CamelCase.split(harderCamelCase).toStream should contain allOf (
+      "simple",
+      "Camel",
+      "Case",
+      "With",
+      "WORDSINCAPSNnot",
+      "Caught"
+    )
+  }
+
+  "A Pascal case word splitter" should "separate PascalCase strings into words" in {
+    PascalCase.split(pascalCase).toStream should contain allOf (
+      "Pascal",
+      "Case"
+    )
+
+    PascalCase.split(simpleCamelCase).toStream should contain allOf (
+      "Camel",
+      "Case"
+      )
   }
 
 }

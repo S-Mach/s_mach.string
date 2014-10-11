@@ -1,43 +1,55 @@
 package s_mach.string
 
+import scala.collection.mutable.ArrayBuffer
 import scala.util.matching.Regex
 
 trait WordSplitter {
+
+  val whiteSpace = """\s+""".r
+  val whiteSpaceOrUnderscores = """(\s|_)+""".r
+  val allLowerPrefix = """[a-z_]+""".r
+  val capitalizedWord = """([A-Z]+[a-z_0-9]*)""".r
+
   def split(s: String) : Iterator[String]
+
+  /**
+   * This method handles an optional prefix on a split
+   * @param optPrefix optional prefix
+   * @param str string to split
+   * @param regex regex to split by.
+   * @return iterator of words that match the regex and the optional prefix prepended
+   */
+  def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
+    //TODO There's probably a less ugly way to do this
+    val accum = ArrayBuffer(optPrefix.getOrElse(""))
+    regex.findAllIn(str).foreach {
+      w => accum.append(w)
+    }
+    accum.iterator
+  }
+
 }
+
 
 
 class WhitespaceWordSplitter extends WordSplitter {
-  // TODO: since this will be widely used library, use pre-compiled regex here
-  // TODO: use \s instead of '  ' to match all whitespace (tabs, new lines)
-  override def split(s: String): Iterator[String] = s.split("( )+").iterator
+  override def split(s: String): Iterator[String] = whiteSpace.split(s).iterator
 }
 
 class WhitespaceOrUnderscoreWordSplitter extends WordSplitter {
-  // TODO: since this will be widely used library, use pre-compiled regex here
-  // TODO: use \s instead of '  ' to match all whitespace (tabs, new lines)
-  // TODO: I think regex should be "(\s|_)+"
-  override def split(s: String): Iterator[String] = s.split("(( )+)|(_)+").filter(!_.isEmpty).iterator
+  override def split(s: String): Iterator[String] = whiteSpaceOrUnderscores.split(s).iterator
 }
 
 class CamelCaseWordSplitter extends WordSplitter {
-
   override def split(s: String): Iterator[String] = {
-
-    val accumulator = List[String]()
-    // TODO: move these to a companion object so that they don't have to be compiled every call
-    val prefix = "[a-z_]+".r
-    val word = "([A-Z]+[a-z_0-9]*)".r
-    prefix.findPrefixOf(s).getOrElse("") :: accumulator
-    // TODO: your list is immutable but this expression returns unit so this isn't doing what you want
-    // TODO: why not just call word.findAllMatchIn(s).map { ... } ? and avoid computing results unless they are needed?
-    for(matchedWord <- word.findAllMatchIn(s)) matchedWord :: accumulator
-    accumulator.iterator
+    splitterAccumulate(allLowerPrefix.findFirstIn(s), s, capitalizedWord)
   }
 }
 
 class PascalCaseWordSplitter extends WordSplitter {
-  override def split(s: String): Iterator[String] = ???
+  override def split(s: String): Iterator[String] = {
+    splitterAccumulate(None, s, capitalizedWord)
+  }
 }
 
 object WordSplitter {

@@ -1,7 +1,7 @@
 package s_mach.string
 
 /**
- * Created by Gustavo on 10/9/14.
+ * Set of test strings used in the test classes
  */
 trait TestStrings {
   val sentence = "The rain in spain."
@@ -17,4 +17,7 @@ trait TestStrings {
   val emptyString = ""
   val someUnderscores = "test_variable_with_underscores"
   val moreUnderscores = "test_variable_with_underscores\nanother variable_for testing"
+  val simpleCamelCase = "simpleCamelCase"
+  val harderCamelCase = "simpleCamelCaseWithWORDSINCAPSNnotCaught"
+  val pascalCase = "PascalCase"
 }

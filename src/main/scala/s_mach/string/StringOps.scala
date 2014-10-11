@@ -1,5 +1,6 @@
 package s_mach.string
 
+import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
@@ -71,7 +72,10 @@ object StringOps {
   /** @return string with all lines indented by n occurrences of s */
   def indent(s: String, n: Int, spacer: String = " ") : String = {
     // TODO: use a StringBuilder here - didn't know about linesWithSeparators - nice find!
-    s.linesWithSeparators.map {case line => spacer * n + line}.mkString
+    val builder : StringBuilder = mutable.StringBuilder.newBuilder
+    s.linesWithSeparators.map {
+      case line => builder.append(spacer * n + line)
+    }.mkString
   }
 
   /** @return None if string length is 0 OR Some(String) if length > 0 */
