@@ -75,7 +75,8 @@ object StringOps {
     val builder : StringBuilder = mutable.StringBuilder.newBuilder
     s.linesWithSeparators.map {
       case line => builder.append(spacer * n + line)
-    }.mkString
+    }
+    builder.toString()
   }
 
   /** @return None if string length is 0 OR Some(String) if length > 0 */
