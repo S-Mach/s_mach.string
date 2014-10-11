@@ -21,7 +21,8 @@ trait WordSplitter {
    */
   protected def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
     //TODO There's probably a less ugly way to do this
-    val accum = ArrayBuffer(optPrefix.getOrElse(""))
+    val accum = ArrayBuffer[String]()
+    optPrefix.collect{ case str => accum.append(str) }
     regex.findAllIn(str).foreach {
       w => accum.append(w)
     }
