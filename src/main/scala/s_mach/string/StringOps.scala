@@ -55,7 +55,13 @@ object StringOps {
   def collapseWhitespace(s: String) : String = ???
 
   /** @return the first character to uppercase and the remaining characters to lowercase */
-  def toProperCase(s: String) : String = s.capitalize
+  def toProperCase(s: String) : String = {
+    s.length match {
+      case long if long > 1 => s.head.toTitleCase + s.tail.toLowerCase
+      case oneChar if oneChar == 1 => s.head.toTitleCase.toString
+      case _ => ""
+    }
+  }
 
   /** @return all whitespace collapsed, each word in proper case */
   def toTitleCase(s: String)(implicit words:WordSplitter) : String = {
@@ -70,7 +76,9 @@ object StringOps {
   }
 
   /** @return all words camel-cased i.e. CamelCase */
-  def toPascalCase(s: String)(implicit words:WordSplitter) : String = ???
+  def toPascalCase(s: String)(implicit words:WordSplitter) : String = {
+    words.split(s).map(str => toProperCase(str)).mkString
+  }
 
   /** @return all words camel-cased i.e. camel_case */
   def toSnakeCase(s: String)(implicit words:WordSplitter) : String = {
