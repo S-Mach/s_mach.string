@@ -58,16 +58,24 @@ object StringOps {
   def toProperCase(s: String) : String = s.capitalize
 
   /** @return all whitespace collapsed, each word in proper case */
-  def toTitleCase(s: String)(implicit words:WordSplitter) : String = ???
+  def toTitleCase(s: String)(implicit words:WordSplitter) : String = {
+    words.split(s).map(str => toProperCase(str)).mkString
+  }
 
   /** @return all words camel-cased i.e. camelCase */
-  def toCamelCase(s: String)(implicit words:WordSplitter) : String = ???
+  def toCamelCase(s: String)(implicit words:WordSplitter) : String = {
+    val iter = words.split(s)
+    val prefix = iter.next().toLowerCase
+    prefix + iter.map(str => toProperCase(str)).mkString
+  }
 
   /** @return all words camel-cased i.e. CamelCase */
   def toPascalCase(s: String)(implicit words:WordSplitter) : String = ???
 
   /** @return all words camel-cased i.e. camel_case */
-  def toSnakeCase(s: String)(implicit words:WordSplitter) : String = ???
+  def toSnakeCase(s: String)(implicit words:WordSplitter) : String = {
+    words.split(s).map(str => str.toLowerCase).mkString("_")
+  }
 
   /** @return string with all lines indented by n occurrences of s */
   def indent(s: String, n: Int, spacer: String = " ") : String = {

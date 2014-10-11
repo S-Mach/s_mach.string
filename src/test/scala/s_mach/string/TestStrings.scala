@@ -1,7 +1,7 @@
 package s_mach.string
 
 /**
- * Set of test strings used in the test classes
+ * Set of test strings used in the test classes. do not change.
  */
 trait TestStrings {
   val sentence = "The rain in spain."

@@ -19,7 +19,7 @@ trait WordSplitter {
    * @param regex regex to split by.
    * @return iterator of words that match the regex and the optional prefix prepended
    */
-  def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
+  protected def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
     //TODO There's probably a less ugly way to do this
     val accum = ArrayBuffer(optPrefix.getOrElse(""))
     regex.findAllIn(str).foreach {
