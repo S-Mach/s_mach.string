@@ -3,6 +3,7 @@ package s_mach.string
 import StringOps._
 
 import org.scalatest.{Matchers, FlatSpec}
+import s_mach.string.WordSplitter.{PascalCase, CamelCase, WhitespaceOrUnderscore, Whitespace}
 
 /**
  * Test suite for StringOps
@@ -70,9 +71,96 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     toLongOpt(doubleString) should equal(None)
   }
 
-  //TODO implement this test
-  /*"toTitleCase()" should "collapse whitespace and make words title cased" in {
+  "ensureSuffix()" should "ensure a string has a suffix" in {
+    ensureSuffix(simpleCamelCase, "CamelCase") should equal(simpleCamelCase)
+  }
 
-  }*/
+  it should "add a prefix if it is not present" in {
+    ensureSuffix(intString, hello) should equal(intString + hello)
+  }
+
+  "toProperCase()" should "capitalize the first word of a string" in {
+    toProperCase(singleWord) should equal(hello)
+  }
+
+  it should "leave strings that begin with a capital letter intact" in {
+    toProperCase(hello) should equal(hello)
+  }
+
+  it should "ignore empty strings" in {
+    val a = ""
+    toProperCase(a) should equal(a)
+  }
+
+  "toTitleCase()" should "collapse whitespace and make words title cased" in {
+    toTitleCase(sentence)(Whitespace) should equal("The Rain In Spain.")
+  }
+
+  it should "only modify the first letter of words" in {
+    toTitleCase(simpleCamelCase)(Whitespace) should equal("Simplecamelcase")
+  }
+
+  it should "ignore empty strings" in {
+    val a = ""
+    toTitleCase(a)(Whitespace) should equal(a)
+  }
+
+  it should "work with different splitters" in {
+    toTitleCase(someUnderscores)(WhitespaceOrUnderscore) should equal("Test Variable With Underscores")
+    toTitleCase(sentence)(WhitespaceOrUnderscore) should equal("The Rain In Spain.")
+    toTitleCase(sentence)(Whitespace) should equal("The Rain In Spain.")
+    toTitleCase(simpleCamelCase)(CamelCase) should equal("Simple Camel Case")
+    toTitleCase(simpleCamelCase)(PascalCase) should equal("Camel Case")
+  }
+
+  "toCamelCase()" should "transform a sequence of strings into camelCase" in {
+    toCamelCase(sentence)(Whitespace) should equal("theRainInSpain.")
+  }
+
+  it should "adopt the behavior of the splitter" in {
+    toCamelCase(simpleCamelCase)(Whitespace) should equal(simpleCamelCase.toLowerCase)
+    toCamelCase(simpleCamelCase)(CamelCase) should equal(simpleCamelCase)
+    toCamelCase(someUnderscores)(WhitespaceOrUnderscore) should equal("testVariableWithUnderscores")
+  }
+
+  it should "ignore empty strings" in {
+    val a = ""
+    toCamelCase(a)(Whitespace) should equal(a)
+    toCamelCase(a)(WhitespaceOrUnderscore) should equal(a)
+    toCamelCase(a)(CamelCase) should equal(a)
+    toCamelCase(a)(PascalCase) should equal(a)
+  }
+
+  "toSnakeCase()" should "transform a sequence of strings into snake_case" in {
+    toSnakeCase(sentence)(Whitespace) should equal ("the_rain_in_spain.")
+  }
+
+  it should "adopt the behavior of the splitter" in {
+    toSnakeCase(simpleCamelCase)(Whitespace) should equal(simpleCamelCase.toLowerCase)
+    toSnakeCase(simpleCamelCase)(CamelCase) should equal("simple_camel_case")
+    toSnakeCase(pascalCase)(PascalCase) should equal("pascal_case")
+    toSnakeCase("A_B")(WhitespaceOrUnderscore) should equal("a_b")
+  }
+
+  "toPascalCase()" should "transform a sequence of strings into PascalCase" in {
+    toPascalCase(simpleCamelCase)(CamelCase) should equal("SimpleCamelCase")
+  }
+
+  "collapsWhitespaec()" should "remove all extraneous white space" in {
+    collapseWhitespace("   space and    more space!   ") should equal("space and more space!")
+  }
+
+  "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
+    val matches = Seq(("rain".r, matchFunction(_)), ("spain".r, matchFunction(_)))
+    findRegexReplaceMatch(sentence, matches) should equal("The heavy rain in Spain.")
+  }
+
+  it should "not perform recursive replacements" in {
+    //TODO this probably isn't testing what I think it's testing
+    val matches = Seq(("rain".r, matchFunction(_)), ("rain".r, matchFunction(_)))
+    findRegexReplaceMatch(sentence, matches) should equal("The heavy heavy rain in spain.")
+  }
+
+
 
 }

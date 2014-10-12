@@ -1,7 +1,9 @@
 package s_mach.string
 
+import scala.util.matching.Regex.Match
+
 /**
- * Created by Gustavo on 10/9/14.
+ * Set of test strings used in the test classes. do not change.
  */
 trait TestStrings {
   val sentence = "The rain in spain."
@@ -17,4 +19,16 @@ trait TestStrings {
   val emptyString = ""
   val someUnderscores = "test_variable_with_underscores"
   val moreUnderscores = "test_variable_with_underscores\nanother variable_for testing"
+  val simpleCamelCase = "simpleCamelCase"
+  val harderCamelCase = "simpleCamelCaseWithWORDSINCAPSNnotCaught"
+  val pascalCase = "PascalCase"
+
+  def matchFunction(m : Match) : String = {
+    m match {
+      case Match("rain") => "heavy rain"
+      case Match("spain") => "Spain"
+      //case Match(" ") => "_"
+      case _ => ""
+    }
+  }
 }

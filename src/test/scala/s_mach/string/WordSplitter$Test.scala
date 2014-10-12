@@ -1,7 +1,7 @@
 package s_mach.string
 
 import org.scalatest.{Matchers, FlatSpec}
-import WordSplitter.{Whitespace, WhitespaceOrUnderscore}
+import s_mach.string.WordSplitter.{PascalCase, Whitespace, WhitespaceOrUnderscore, CamelCase}
 /**
  * Splitter tests
  *
@@ -10,7 +10,7 @@ import WordSplitter.{Whitespace, WhitespaceOrUnderscore}
  */
 class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
 
-  "A white space splitter" should "split a string by whitespace and newlines" in {
+  "White space splitter" should "split a string by whitespace and newlines" in {
     Whitespace.split(sentence).toStream should contain allOf (
       "The",
       "rain",
@@ -26,7 +26,7 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     Whitespace.split(singleWord).toStream should contain only "hello!"
   }
 
-  "A whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {
+  "Whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {
     WhitespaceOrUnderscore.split(sentence).toStream should contain allOf (
       "The",
       "rain",
@@ -57,6 +57,34 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "testing"
       )
     )
+  }
+
+  "Camel case word splitter" should "separate a camelCased string into words" in {
+    CamelCase.split(simpleCamelCase).toStream should contain allOf (
+      "simple",
+      "Camel",
+      "Case"
+    )
+    CamelCase.split(harderCamelCase).toStream should contain allOf (
+      "simple",
+      "Camel",
+      "Case",
+      "With",
+      "WORDSINCAPSNnot",
+      "Caught"
+    )
+  }
+
+  "Pascal case word splitter" should "separate PascalCase strings into words" in {
+    PascalCase.split(pascalCase).toStream should contain allOf (
+      "Pascal",
+      "Case"
+    )
+
+    PascalCase.split(simpleCamelCase).toStream should contain allOf (
+      "Camel",
+      "Case"
+      )
   }
 
 }
