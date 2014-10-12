@@ -1,5 +1,7 @@
 package s_mach.string
 
+import scala.util.matching.Regex.Match
+
 /**
  * Set of test strings used in the test classes. do not change.
  */
@@ -20,4 +22,13 @@ trait TestStrings {
   val simpleCamelCase = "simpleCamelCase"
   val harderCamelCase = "simpleCamelCaseWithWORDSINCAPSNnotCaught"
   val pascalCase = "PascalCase"
+
+  def matchFunction(m : Match) : String = {
+    m match {
+      case Match("rain") => "heavy rain"
+      case Match("spain") => "Spain"
+      //case Match(" ") => "_"
+      case _ => ""
+    }
+  }
 }

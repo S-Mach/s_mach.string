@@ -150,6 +150,17 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     collapseWhitespace("   space and    more space!   ") should equal("space and more space!")
   }
 
+  "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
+    val matches = Seq(("rain".r, matchFunction(_)), ("spain".r, matchFunction(_)))
+    findRegexReplaceMatch(sentence, matches) should equal("The heavy rain in Spain.")
+  }
+
+  it should "not perform recursive replacements" in {
+    //TODO this probably isn't testing what I think it's testing
+    val matches = Seq(("rain".r, matchFunction(_)), ("rain".r, matchFunction(_)))
+    findRegexReplaceMatch(sentence, matches) should equal("The heavy heavy rain in spain.")
+  }
+
 
 
 }

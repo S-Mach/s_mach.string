@@ -17,7 +17,17 @@ object StringOps {
   def findRegexReplaceMatch(
     s: String,
     zomRegex: Seq[(Regex, Match => String)]
-  ) : String = ???
+  ) : String = {
+    var t = s
+    for((regex, matchingFunc) <- zomRegex) {
+      t = regex.replaceAllIn(t, matchingFunc)
+    }
+    t
+    /*zomRegex.map{
+      case (regex, matcher) =>
+        regex.replaceAllIn(s, matcher)
+    }.mkString*/
+  }
 
   /** @return string with all occurrences of regex replaced with the paired string. Ensures recursive replacements cannot occur. */
   def findRegexReplace(
