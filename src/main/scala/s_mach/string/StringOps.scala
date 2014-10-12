@@ -1,5 +1,7 @@
 package s_mach.string
 
+import s_mach.string.WordSplitter.Whitespace
+
 import scala.collection.mutable
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
@@ -52,45 +54,58 @@ object StringOps {
   )(implicit splitter:WordSplitter) : String = ???
 
   /** @return string with all whitespace collapsed to a single space and all leading and trailing whitespace trimmed */
-  def collapseWhitespace(s: String) : String = ???
+  def collapseWhitespace(s: String) : String = Whitespace.split(s).mkString(" ").trim
 
   /** @return the first character to uppercase and the remaining characters to lowercase */
   def toProperCase(s: String) : String = {
     s.length match {
-      case long if long > 1 => s.head.toTitleCase + s.tail.toLowerCase
+      case long if long > 1 => s.head.toUpper + s.tail.toLowerCase
       case oneChar if oneChar == 1 => s.head.toTitleCase.toString
       case _ => ""
     }
   }
 
+  /**
+   * Helper method as the other transforms essentially follow the same pattern
+   * @param s string to transform
+   * @param transform String => String transform that we apply on each split string
+   * @param concatenator parameter to mkString. defaults to empty string
+   * @param words implicit splitter
+   * @return transformed sequence of words
+   */
+  private def mapWithTransform(s : String, transform: String => String, concatenator: String = "")(implicit words:WordSplitter) : String = {
+    words.split(s).map(transform).mkString(concatenator)
+  }
+
   /** @return all whitespace collapsed, each word in proper case */
   def toTitleCase(s: String)(implicit words:WordSplitter) : String = {
-    words.split(s).map(str => toProperCase(str)).mkString
+    mapWithTransform(s, toProperCase, " ")
   }
+
 
   /** @return all words camel-cased i.e. camelCase */
   def toCamelCase(s: String)(implicit words:WordSplitter) : String = {
     val iter = words.split(s)
     val prefix = iter.next().toLowerCase
-    prefix + iter.map(str => toProperCase(str)).mkString
+    prefix + iter.map(toProperCase).mkString
   }
 
   /** @return all words camel-cased i.e. CamelCase */
   def toPascalCase(s: String)(implicit words:WordSplitter) : String = {
-    words.split(s).map(str => toProperCase(str)).mkString
+    mapWithTransform(s, toProperCase)
   }
 
   /** @return all words camel-cased i.e. camel_case */
-  def toSnakeCase(s: String)(implicit words:WordSplitter) : String = {
-    words.split(s).map(str => str.toLowerCase).mkString("_")
+  def toSnakeCase(s: String)(implicit  words:WordSplitter) : String = {
+    mapWithTransform(s, _.toLowerCase, "_")
   }
 
   /** @return string with all lines indented by n occurrences of s */
   def indent(s: String, n: Int, spacer: String = " ") : String = {
-    // TODO: use a StringBuilder here - didn't know about linesWithSeparators - nice find!
     val builder : StringBuilder = mutable.StringBuilder.newBuilder
+    val indent = spacer * n
     s.linesWithSeparators.foreach {
-      line => builder.append(spacer * n + line)
+      line => builder.append(indent + line)
     }
     builder.toString()
   }
