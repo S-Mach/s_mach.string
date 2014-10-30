@@ -151,14 +151,13 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
-    val matches = Seq(("rain".r, matchFunction(_)), ("spain".r, matchFunction(_)))
+    val matches = collection.immutable.Seq(("rain".r, spainMatchFunction), ("spain".r, spainMatchFunction))
     findRegexReplaceMatch(sentence, matches) should equal("The heavy rain in Spain.")
   }
 
   it should "not perform recursive replacements" in {
-    //TODO this probably isn't testing what I think it's testing
-    val matches = Seq(("rain".r, matchFunction(_)), ("rain".r, matchFunction(_)))
-    findRegexReplaceMatch(sentence, matches) should equal("The heavy heavy rain in spain.")
+    val matches = collection.immutable.Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
+    findRegexReplaceMatch("bar foo", matches) should equal("foo bla")
   }
 
 

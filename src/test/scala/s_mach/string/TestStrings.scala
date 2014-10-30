@@ -23,11 +23,18 @@ trait TestStrings {
   val harderCamelCase = "simpleCamelCaseWithWORDSINCAPSNnotCaught"
   val pascalCase = "PascalCase"
 
-  def matchFunction(m : Match) : String = {
+  val spainMatchFunction = (m : Match) => {
     m match {
       case Match("rain") => "heavy rain"
       case Match("spain") => "Spain"
-      //case Match(" ") => "_"
+      case _ => ""
+    }
+  }
+
+  val fooMatchFunction = (m : Match) => {
+    m match {
+      case Match("bar") => "foo"
+      case Match("foo") => "bla"
       case _ => ""
     }
   }
