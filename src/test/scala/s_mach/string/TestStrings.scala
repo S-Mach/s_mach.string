@@ -38,4 +38,12 @@ trait TestStrings {
       case _ => ""
     }
   }
+
+  val scalaMatchFunction = (m : Match) => {
+    m match {
+      case Match("Int") => "String"
+      case Match(".") => " "
+      case _ => ""
+    }
+  }
 }
