@@ -1,7 +1,8 @@
 package s_mach.string
 
+import java.util.regex.Pattern
 import s_mach.string.WordSplitter.Whitespace
-
+import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashSet}
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
@@ -11,8 +12,8 @@ object StringOps {
 
   implicit def match2tuple(m : Match) : (Int, Int) = (m.start, m.end)
 
-  private def overlaps(set :scala.collection.mutable.Set[(Int,Int)], region : (Int, Int)) : Boolean = {
-    set.exists { case (begin, end) =>
+  private def overlaps(regions : ArrayBuffer[((Int,Int), String)], region : (Int, Int)) : Boolean = {
+    regions.exists { case ((begin, end),_) =>
       region._1 > begin && region._1 < end ||
       region._2 > begin && region._2 < end
     }
@@ -20,7 +21,8 @@ object StringOps {
 
   def matchLength(m : Match) = m.end - m.start
 
-  /** @return string with suffix appended if string does not end with suffix */
+  /** @return string with suffix appended if string does not end with suffix
+    */
   def ensureSuffix(s: String, suffix: String) : String = {
     if(s.endsWith(suffix)) s else s + suffix
   }
@@ -31,61 +33,76 @@ object StringOps {
     */
   def findRegexReplaceMatch(s: String, zomRegex: Seq[(Regex, Match => String)]) : String = {
     val matchedRegions = HashSet[(Int,Int)]()
-    val willReplace = ArrayBuffer[(Match,  Match => String)]()
+    val willReplace = ArrayBuffer[((Int,Int),  String)]()
     for((regex, matcher) <- zomRegex) {
       regex.findAllMatchIn(s).foreach{ match_ =>
-        if(!overlaps(matchedRegions, match_)) {
+        if(!overlaps(willReplace, match_)) {
           matchedRegions += match_
-          willReplace.append((match_, matcher))
+          willReplace.append((match_, matcher(match_)))
         }
       }
     }
-    var strList = s.toList
-    var offset = 0
-    willReplace.foreach { case (match_, matcher) =>
-      strList = strList.patch(offset+match_.start, matcher(match_), matchLength(match_) )
-      offset += matcher(match_).length - matchLength(match_)
+    willReplace.append(((s.length, 0) ,""))
+    if(willReplace.nonEmpty) {
+      val sb = new mutable.StringBuilder()
+      sb.append(s.substring(0, willReplace.head._1._1))
+      willReplace.sliding(2,1).foreach { a =>
+        val first = a(0)
+        val next = a(1)
+        sb.append(first._2)
+        sb.append(s.slice(first._1._2, next._1._1))
+      }
+      sb.result()
+    } else {
+      s
     }
-    strList.mkString
   }
 
-  /** @return string with all occurrences of regex replaced with the paired string. Ensures recursive replacements cannot occur. */
+  /** @return string with all occurrences of regex replaced with the paired string.
+    *         Ensures recursive replacements cannot occur.
+    *
+    */
   def findRegexReplace(
     s: String,
     zomRegex: Seq[(Regex, String)]
   ) : String = {
-    val matchedRegions = HashSet[(Int,Int)]()
-    val willReplace = ArrayBuffer[(Match,  String)]()
-    for((regex, replacement) <- zomRegex) {
-      regex.findAllMatchIn(s).foreach{ match_ =>
-        if(!overlaps(matchedRegions, match_)) {
-          matchedRegions += match_
-          willReplace.append((match_, replacement))
-        }
-      }
-    }
-    var strList = s.toList
-    var offset = 0
-    willReplace.foreach { case (match_, replacement) =>
-      strList = strList.patch(offset+match_.start, replacement, matchLength(match_) )
-      offset += replacement.length - matchLength(match_)
-    }
-    strList.mkString
+    findRegexReplaceMatch(s, zomRegex.map{
+      case (regex, replacement) => (regex, {_ : Match => replacement})
+    })
   }
 
-  /** @return string with all replacements. For each (find,replace) pair, all occurrences of find are substituted with replace. Ensures recursive replacements cannot occur. */
+  /** @return string with all replacements.
+    *         For each (find,replace) pair, all occurrences of find are substituted with replace.
+    *         Ensures recursive replacements cannot occur.
+    */
   def findReplace(
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(String, String)]
-  ) : String = ???
+  ) : String = {
+    findRegexReplace(s, fr.map { case (find, replacement) =>
+      val regexFlags = if(caseSensitive) "(?i)" else ""
+      val regex = (regexFlags + Regex.quote(find)).r
+      (regex, replacement)
+    })
+    }
 
-  /** @return string with all replacements. For each (find,replace) pair, all occurrences of find as a word are substituted with replace. Ensures recursive replacements cannot occur. */
+  /** @return string with all replacements.
+    *         For each (find,replace) pair, all occurrences of find as a word are substituted with replace.
+    *         Ensures recursive replacements cannot occur. */
   def findReplaceWords(
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(String, String)]
   )(implicit splitter:WordSplitter) : String = {
+    //WordSplitter needs to preserve the "glue" between elements
+    //2 versions of split, one without glue and one with glue
+//    splitter.split(s).map { case word =>
+//        fr.find(_ == word) match {
+//          case Some((_, replacement)) => replacement
+//          case None => word
+//        }
+//    }.mkString
     ???
   }
 
@@ -94,7 +111,7 @@ object StringOps {
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(Seq[String], String)]
-  ) : String = ???
+  ) : String = ??? //implement in terms of findregexreplace
 
   /** @return string with all replacements. For each (find*,replace) pair, all occurrences of find as a word are substituted with replace. Ensures recursive replacements cannot occur. */
   def findAllReplaceWords(

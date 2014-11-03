@@ -180,6 +180,21 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
   }
 
+  "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
+    val matches = Seq(("rain", "heavy rain"), ("spain", "Spain"))
+    findReplace(sentence, true , matches) should equal ("The heavy rain in Spain.")
+  }
+
+  it should "not perform recursive replacements" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("bar foo", matches) should equal("foo bla")
+  }
+
+  it should "pass this test" in {
+    val matches = Seq(("Int".r,"String"),("\\.".r," "))
+    findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
+  }
+
 
 
 }
