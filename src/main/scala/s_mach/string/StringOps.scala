@@ -32,30 +32,30 @@ object StringOps {
     *         Ensures recursive replacements cannot occur.
     */
   def findRegexReplaceMatch(s: String, zomRegex: Seq[(Regex, Match => String)]) : String = {
-    val matchedRegions = HashSet[(Int,Int)]()
-    val willReplace = ArrayBuffer[((Int,Int),  String)]()
-    for((regex, matcher) <- zomRegex) {
-      regex.findAllMatchIn(s).foreach{ match_ =>
-        if(!overlaps(willReplace, match_)) {
-          matchedRegions += match_
-          willReplace.append((match_, matcher(match_)))
+    if(s.nonEmpty) {
+      val matchedRegions = HashSet[(Int, Int)]()
+      val willReplace = ArrayBuffer[((Int, Int), String)]()
+      for ((regex, matcher) <- zomRegex) {
+        regex.findAllMatchIn(s).foreach { match_ =>
+          if (!overlaps(willReplace, match_)) {
+            matchedRegions += match_
+            willReplace.append((match_, matcher(match_)))
+          }
         }
       }
-    }
-    willReplace.append(((s.length, 0) ,""))
-    if(willReplace.nonEmpty) {
-      val sb = new mutable.StringBuilder()
-      sb.append(s.substring(0, willReplace.head._1._1))
-      willReplace.sliding(2,1).foreach { a =>
-        val first = a(0)
-        val next = a(1)
-        sb.append(first._2)
-        sb.append(s.slice(first._1._2, next._1._1))
-      }
-      sb.result()
-    } else {
-      s
-    }
+      willReplace.append(((s.length, 0), ""))
+      if (willReplace.nonEmpty) {
+        val sb = new mutable.StringBuilder()
+        sb.append(s.substring(0, willReplace.head._1._1))
+        willReplace.sliding(2, 1).foreach { a =>
+          val first = a(0)
+          val next = a(1)
+          sb.append(first._2)
+          sb.append(s.slice(first._1._2, next._1._1))
+        }
+        sb.result()
+      } else s
+    } else ""
   }
 
   /** @return string with all occurrences of regex replaced with the paired string.

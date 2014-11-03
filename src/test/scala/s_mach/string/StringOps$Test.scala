@@ -160,6 +160,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     findRegexReplaceMatch("bar foo", matches) should equal("foo bla")
   }
 
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
+    findRegexReplaceMatch("", matches) should equal("")
+  }
+
   it should "pass this test" in {
     val matches = Seq(("Int".r,scalaMatchFunction),("\\.".r,scalaMatchFunction))
     findRegexReplaceMatch("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
@@ -175,6 +180,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     findRegexReplace("bar foo", matches) should equal("foo bla")
   }
 
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("", matches) should equal("")
+  }
+
   it should "pass this test" in {
     val matches = Seq(("Int".r,"String"),("\\.".r," "))
     findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
@@ -182,12 +192,17 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
 
   "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
     val matches = Seq(("rain", "heavy rain"), ("spain", "Spain"))
-    findReplace(sentence, true , matches) should equal ("The heavy rain in Spain.")
+    findReplace(sentence, caseSensitive =  true , matches) should equal ("The heavy rain in Spain.")
   }
 
   it should "not perform recursive replacements" in {
     val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
     findRegexReplace("bar foo", matches) should equal("foo bla")
+  }
+
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("", matches) should equal("")
   }
 
   it should "pass this test" in {
