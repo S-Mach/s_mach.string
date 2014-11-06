@@ -146,19 +146,68 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     toPascalCase(simpleCamelCase)(CamelCase) should equal("SimpleCamelCase")
   }
 
-  "collapsWhitespaec()" should "remove all extraneous white space" in {
+  "collapsWhitespace()" should "remove all extraneous white space" in {
     collapseWhitespace("   space and    more space!   ") should equal("space and more space!")
   }
 
   "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
-    val matches = Seq(("rain".r, matchFunction(_)), ("spain".r, matchFunction(_)))
+    val matches = Seq(("rain".r, spainMatchFunction), ("spain".r, spainMatchFunction))
     findRegexReplaceMatch(sentence, matches) should equal("The heavy rain in Spain.")
   }
 
   it should "not perform recursive replacements" in {
-    //TODO this probably isn't testing what I think it's testing
-    val matches = Seq(("rain".r, matchFunction(_)), ("rain".r, matchFunction(_)))
-    findRegexReplaceMatch(sentence, matches) should equal("The heavy heavy rain in spain.")
+    val matches = Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
+    findRegexReplaceMatch("bar foo", matches) should equal("foo bla")
+  }
+
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
+    findRegexReplaceMatch("", matches) should equal("")
+  }
+
+  it should "pass this test" in {
+    val matches = Seq(("Int".r,scalaMatchFunction),("\\.".r,scalaMatchFunction))
+    findRegexReplaceMatch("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
+  }
+
+  "findRegexReplace()" should "replace all matches of a sequence of regexes with a paired string" in {
+    val matches = Seq(("rain".r, "heavy rain"), ("spain".r, "Spain"))
+    findRegexReplace(sentence, matches) should equal ("The heavy rain in Spain.")
+  }
+
+  it should "not perform recursive replacements" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("bar foo", matches) should equal("foo bla")
+  }
+
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("", matches) should equal("")
+  }
+
+  it should "pass this test" in {
+    val matches = Seq(("Int".r,"String"),("\\.".r," "))
+    findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
+  }
+
+  "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
+    val matches = Seq(("rain", "heavy rain"), ("spain", "Spain"))
+    findReplace(sentence, caseSensitive =  true , matches) should equal ("The heavy rain in Spain.")
+  }
+
+  it should "not perform recursive replacements" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("bar foo", matches) should equal("foo bla")
+  }
+
+  it should "ignore empty strings" in {
+    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
+    findRegexReplace("", matches) should equal("")
+  }
+
+  it should "pass this test" in {
+    val matches = Seq(("Int".r,"String"),("\\.".r," "))
+    findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
   }
 
 

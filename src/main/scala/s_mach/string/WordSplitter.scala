@@ -6,7 +6,7 @@ import scala.util.matching.Regex
 trait WordSplitter {
 
   def split(s: String) : Iterator[String]
-
+  //def splitWithGlue(s : String) : Iterator[(String, String)]
   /**
    * This method handles an optional prefix on a split
    * @param optPrefix optional prefix
@@ -16,19 +16,32 @@ trait WordSplitter {
    */
   protected def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
     //TODO There's probably a less ugly way to do this
-    val accum = ArrayBuffer[String]()
-    optPrefix.collect{ case str => accum.append(str) }
-    regex.findAllIn(str).foreach {
-      w => accum.append(w)
+    if(str.nonEmpty) {
+      val accum = List.newBuilder[String]
+      optPrefix.foreach( accum.+= )
+      regex.findAllIn(str).foreach(accum.+=)
+      accum.result().iterator
+    } else {
+      Iterator("")
     }
-    if(accum.isEmpty) accum.append("")
-    accum.iterator
+
   }
 }
 
 class WhitespaceWordSplitter extends WordSplitter {
-  import WordSplitter.whiteSpace
+  import WordSplitter._
+
   override def split(s: String): Iterator[String] = whiteSpace.split(s).iterator
+
+  //make sure to test leading whitespace and non-leading whitespace
+//  override def splitWithGlue(s: String): Iterator[(String, String)] = {
+//    whiteSpace.findFirstMatchIn(s) match {
+//      case Some(spaces) =>
+//        Iterator(("", spaces.toString())) ++
+//        magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
+//      case None => magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
+//    }
+//  }
 }
 
 class WhitespaceOrUnderscoreWordSplitter extends WordSplitter {
@@ -44,7 +57,7 @@ class CamelCaseWordSplitter extends WordSplitter {
 }
 
 class PascalCaseWordSplitter extends WordSplitter {
-  import WordSplitter.{capitalizedWord}
+  import WordSplitter.capitalizedWord
   override def split(s: String): Iterator[String] = {
     splitterAccumulate(None, s, capitalizedWord)
   }
@@ -52,6 +65,7 @@ class PascalCaseWordSplitter extends WordSplitter {
 
 object WordSplitter {
 
+  val magicWhiteSpace = "(?<=\\S)(?=\\s)|(?<=\\s)(?=\\S)".r
   val whiteSpace = """\s+""".r
   val whiteSpaceOrUnderscores = """(\s|_)+""".r
   val allLowerPrefix = """[a-z_]+""".r
