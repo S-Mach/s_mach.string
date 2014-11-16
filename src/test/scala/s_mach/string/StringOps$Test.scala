@@ -210,6 +210,22 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     findRegexReplace("var a : Int = String.mkString", matches) should equal("var a : String = String mkString")
   }
 
+  "findReplaceWords()" should "preserve the glue between words" in {
+    findReplaceWords(sentence, caseSensitive = true, replacementSequence)(Whitespace) should equal("The Rain in Espana.")
+  }
+
+  it should "ignore case when ordered to" in {
+    findReplaceWords(sentence, caseSensitive = false, replacementSequence.map{case (a, b) => (a.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
+  }
+
+  it should "not perform recursive replacemens" in {
+    findReplaceWords("bar foo", caseSensitive = false, fooMatchSequence)(Whitespace) should equal("foo bla")
+  }
+
+  it should "ignore empty strings" in {
+    findReplaceWords("", caseSensitive = true, replacementSequence)(Whitespace) should equal("")
+  }
+
 
 
 }

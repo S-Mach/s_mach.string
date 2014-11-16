@@ -50,9 +50,9 @@ class WhitespaceWordSplitter extends WordSplitter {
       case Some(spaces) =>
         if(spaces.start == 0) {
             Iterator(("", spaces.toString())) ++
-            magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(1), a(0)) }
+            magicWhiteSpace.split(s).sliding(2,2).map{ a => if (a.length == 2) (a(1), a(0)) else (a(0), "") } //voodoo
         } else {
-            magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
+            magicWhiteSpace.split(s).sliding(2,2).map{ a => if (a.length == 2) (a(0), a(1)) else (a(0), "") }
         }
       case None => whiteSpace.split(s).map(a => (a, "")).iterator
     }
