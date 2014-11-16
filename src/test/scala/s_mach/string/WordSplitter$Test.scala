@@ -130,11 +130,11 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     CamelCase.split("").toStream should contain ("")
   }
 
-  it should "split a string and maintain its glue correctly" in {
-    CamelCase.splitWithGlue("abcDef").toStream should contain (("abc", ""), ("Def", ""))
-    CamelCase.splitWithGlue("abc Def").toStream should contain (("abc", " "), ("Def", ""))
-    CamelCase.splitWithGlue(" abc Def").toStream should contain (("", " "),("abc", " "), ("Def", ""))
-  }
+  // it should "split a string and maintain its glue correctly" in {
+  //   CamelCase.splitWithGlue("abcDef").toStream should contain (("abc", ""), ("Def", ""))
+  //   CamelCase.splitWithGlue("abc Def").toStream should contain (("abc", " "), ("Def", ""))
+  //   CamelCase.splitWithGlue(" abc Def").toStream should contain (("", " "),("abc", " "), ("Def", ""))
+  // }
 
   it should "degenerate to regular splitting when splitting a string with no glue" in {
     CamelCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
