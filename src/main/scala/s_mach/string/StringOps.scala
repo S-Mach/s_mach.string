@@ -113,15 +113,13 @@ object StringOps {
     caseSensitive: Boolean,
     fr: Seq[(String, String)]
   )(implicit splitter:WordSplitter) : String = {
-    //WordSplitter needs to preserve the "glue" between elements
-    //2 versions of split, one without glue and one with glue
-//    splitter.split(s).map { case word =>
-//        fr.find(_ == word) match {
-//          case Some((_, replacement)) => replacement
-//          case None => word
-//        }
-//    }.mkString
-    ???
+    val caseFunction : ((String, String), String) => Boolean = (a,b) => if(caseSensitive) a._1 == b else a._1.equalsIgnoreCase(b)
+    splitter.splitWithGlue(s).map { case (word, glue) =>
+        fr.find(caseFunction(_, word)) match {
+          case Some((_, replacement)) => replacement + glue
+          case None => word + glue
+        }
+    }.mkString
   }
 
   /** @return string with all replacements. For each (find*,replace) pair, all occurrences of find are substituted with replace. Ensures recursive replacements cannot occur. */

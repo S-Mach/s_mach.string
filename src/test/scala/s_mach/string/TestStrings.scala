@@ -57,6 +57,10 @@ trait TestStrings {
     }
   }
 
+  val fooMatchSequence = Seq(("bar", "foo"),("foo", "bla"))
+
+  val replacementSequence = Seq(("rain", "Rain"), ("spain.", "Espana."))
+
   val scalaMatchFunction = (m : Match) => {
     m match {
       case Match("Int") => "String"
