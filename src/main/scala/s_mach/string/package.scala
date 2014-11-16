@@ -18,6 +18,8 @@
 */
 package s_mach
 
+import s_mach.string.impl.StringOps
+
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 
