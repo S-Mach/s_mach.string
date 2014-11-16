@@ -75,6 +75,23 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     )
   }
 
+  it should "return an iterator with an empty string if it can't split" in {
+    WhitespaceOrUnderscore.split("").toStream should contain ("")
+  }
+
+  it should "split a string and maintain its glue correctly" in {
+    WhitespaceOrUnderscore.splitWithGlue("aa ").toStream should contain (("aa", " "))
+  }
+
+  it should "degenerate to regular splitting when splitting a string with no glue" in {
+    WhitespaceOrUnderscore.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  }
+
+  it should """return an iterator of ("","") on an empty string"""" in {
+    WhitespaceOrUnderscore.splitWithGlue("").toStream should contain (("", ""))
+  }
+
+
   "Camel case word splitter" should "separate a camelCased string into words" in {
     CamelCase.split(simpleCamelCase).toStream should contain allOf (
       "simple",
