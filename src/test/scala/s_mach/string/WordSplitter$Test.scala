@@ -30,8 +30,16 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     Whitespace.split("").toStream should contain ("")
   }
 
-  it should "split with glue correctly" in {
-    Whitespace.split("aa ").toStream should contain (("", "aa"), (" ", ""))
+  it should "split a string and maintain its glue correctly" in {
+    Whitespace.splitWithGlue("aa ").toStream should contain (("aa", " "))
+  }
+
+  it should "degenerate to regular splitting when splitting a string with no glue" in {
+    Whitespace.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  }
+
+  it should """return an iterator of ("","") on an empty string"""" in {
+    Whitespace.splitWithGlue("").toStream should contain (("", ""))
   }
 
   "Whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {

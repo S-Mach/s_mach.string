@@ -27,7 +27,7 @@ trait WordSplitter {
    * @param regex regex to split by.
    * @return iterator of words that match the regex and the optional prefix prepended
    */
-  protected def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {    //TODO There's probably a less ugly way to do this
+  protected def splitterAccumulate(optPrefix : Option[String], str : String, regex : Regex) : Iterator[String] = {
     if(str.nonEmpty) {
       val accum = List.newBuilder[String]
       optPrefix.foreach( accum.+= )
@@ -45,13 +45,16 @@ class WhitespaceWordSplitter extends WordSplitter {
 
   override def split(s: String): Iterator[String] = whiteSpace.split(s).iterator
 
-//  make sure to test leading whitespace and non-leading whitespace
   override def splitWithGlue(s: String): Iterator[(String, String)] = {
     whiteSpace.findFirstMatchIn(s) match {
       case Some(spaces) =>
-        Iterator(("", spaces.toString())) ++
-        magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
-      case None => magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
+        if(spaces.start == 0) {
+            Iterator(("", spaces.toString())) ++
+            magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(1), a(0)) }
+        } else {
+            magicWhiteSpace.split(s).sliding(2,2).map{ a => (a(0), a(1)) }
+        }
+      case None => whiteSpace.split(s).map(a => (a, "")).iterator
     }
   }
 }
