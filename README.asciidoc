@@ -7,3 +7,4 @@ v1,06-Oct-2014
 image:https://travis-ci.org/S-Mach/s_mach.string.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.string"]  image:https://coveralls.io/repos/S-Mach/s_mach.string/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.string"] https://github.com/S-Mach/s_mach.string[Code] http://s-mach.github.io/s_mach.string/#s_mach.string.package[Scaladoc]
 
 *UNDER CONSTRUCTION*
+test
