@@ -26,6 +26,14 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     Whitespace.split(singleWord).toStream should contain only "hello!"
   }
 
+  it should "return an iterator with an empty string if it can't split" in {
+    Whitespace.split("").toStream should contain ("")
+  }
+
+  it should "split with glue correctly" in {
+    Whitespace.split("aa ").toStream should contain (("", "aa"), (" ", ""))
+  }
+
   "Whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {
     WhitespaceOrUnderscore.split(sentence).toStream should contain allOf (
       "The",

@@ -14,9 +14,8 @@ trait WordSplitter {
 
   /**
    * Splits a string based on some boundary condition and also preserves
-   * the characters that were between the boundaries. For example,
-   * WhitespaceWordSplitter.splitWithGlue("hello  hi   3 spaces") will return an iterator
-   * with the elements Iterator(("hello", "  "), ("hi", "   "), ("3", " "), ("spaces", ""))
+   * the characters that were between the boundaries.
+   * ([content], [glue])
    * @param s string to split
    * @return Iterator of the split and the intermediate characters
    */
