@@ -16,15 +16,16 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.string
+package s_mach.string.impl
 
-import java.util.regex.Pattern
+import s_mach.string.WordSplitter
 import s_mach.string.WordSplitter.Whitespace
+
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashSet}
+import scala.language.implicitConversions
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import scala.language.implicitConversions
 
 object StringOps {
 
@@ -127,14 +128,28 @@ object StringOps {
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(Seq[String], String)]
-  ) : String = ??? //implement in terms of findregexreplace
+  ) : String = {
+    findRegexReplace(s, fr.map { case (find, replacement) =>
+      val regexFlags = if(caseSensitive) "(?i)" else ""
+      val regex = s"$regexFlags(${find.map(Regex.quote).mkString("|")})".r
+      (regex, replacement)
+    })
+  }
 
   /** @return string with all replacements. For each (find*,replace) pair, all occurrences of find as a word are substituted with replace. Ensures recursive replacements cannot occur. */
   def findAllReplaceWords(
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(Seq[String], String)]
-  )(implicit splitter:WordSplitter) : String = ???
+  )(implicit splitter:WordSplitter) : String = {
+    val caseFunction : ((Seq[String], String), String) => Boolean = (a,b) => if(caseSensitive) a._1.contains(b) else a._1.exists (b.equalsIgnoreCase)
+    splitter.splitWithGlue(s).map { case (word, glue) =>
+      fr.find(caseFunction(_, word)) match {
+        case Some((_, replacement)) => replacement + glue
+        case None => word + glue
+      }
+    }.mkString
+  }
 
   /** @return string with all whitespace collapsed to a single space and all leading and trailing whitespace trimmed */
   def collapseWhitespace(s: String) : String = Whitespace.split(s).mkString(" ").trim

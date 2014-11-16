@@ -19,7 +19,7 @@
 package s_mach.string
 
 import org.scalatest.{Matchers, FlatSpec}
-import s_mach.string.WordSplitter.{PascalCase, Whitespace, WhitespaceOrUnderscore, CamelCase}
+import s_mach.string.WordSplitter._
 /**
  * Splitter tests
  *
@@ -124,6 +124,24 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "WORDSINCAPSNnot",
       "Caught"
     )
+  }
+
+  it should "return an iterator with an empty string if it can't split" in {
+    CamelCase.split("").toStream should contain ("")
+  }
+
+  it should "split a string and maintain its glue correctly" in {
+    CamelCase.splitWithGlue("abcDef").toStream should contain (("abc", ""), ("Def", ""))
+    CamelCase.splitWithGlue("abc Def").toStream should contain (("abc", " "), ("Def", ""))
+    CamelCase.splitWithGlue(" abc Def").toStream should contain (("", " "),("abc", " "), ("Def", ""))
+  }
+
+  it should "degenerate to regular splitting when splitting a string with no glue" in {
+    CamelCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  }
+
+  it should """return an iterator of ("","") on an empty string"""" in {
+    CamelCase.splitWithGlue("").toStream should contain (("", ""))
   }
 
   "Pascal case word splitter" should "separate PascalCase strings into words" in {
