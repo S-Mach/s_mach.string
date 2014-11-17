@@ -38,8 +38,6 @@ object StringOps {
     }
   }
 
-  def matchLength(m : Match) = m.end - m.start
-
   /** @return string with suffix appended if string does not end with suffix
     */
   def ensureSuffix(s: String, suffix: String) : String = {
@@ -62,8 +60,8 @@ object StringOps {
           }
         }
       }
-      willReplace.append(((s.length, 0), ""))
-      if (willReplace.nonEmpty) {
+      willReplace.append(((s.length, 0), "")) //why did we need this?
+      if (willReplace.length > 1) {
         val sb = new mutable.StringBuilder()
         sb.append(s.substring(0, willReplace.head._1._1))
         willReplace.sliding(2, 1).foreach { a =>
