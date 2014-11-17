@@ -37,9 +37,7 @@ object StringOps {
       region._2 > begin && region._2 < end
     }
   }
-
-  def matchLength(m : Match) = m.end - m.start
-
+  
   /** @return string with suffix appended if string does not end with suffix
     */
   def ensureSuffix(s: String, suffix: String) : String = {
