@@ -212,23 +212,28 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
-    val matches = Seq(("rain", "heavy rain"), ("spain", "Spain"))
+    val matches = Seq(("rain", "heavy rain"), ("spain.", "Spain."))
     sentence.findReplace(caseSensitive =  true , fr = matches) should equal ("The heavy rain in Spain.")
   }
 
+  it should "be aware of case" in {
+    val matches = Seq(("RAIN", "heavy rain"), ("SPAIN", "Spain"))
+    sentence.findReplace(caseSensitive =  false , fr = matches) should equal ("The heavy rain in Spain.")
+  }
+
   it should "not perform recursive replacements" in {
-    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
-    "bar foo".findRegexReplace(matches) should equal("foo bla")
+    val matches = Seq(("bar","foo"),("foo","bla"))
+    "bar foo".findReplace(matches) should equal("foo bla")
   }
 
   it should "ignore empty strings" in {
-    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
-    "".findRegexReplace(matches) should equal("")
+    val matches = Seq(("bar","foo"),("foo","bla"))
+    "".findReplace(matches) should equal("")
   }
 
   it should "pass this test" in {
-    val matches = Seq(("Int".r,"String"),("\\.".r," "))
-    "var a : Int = String.mkString".findRegexReplace( matches) should equal("var a : String = String mkString")
+    val matches = Seq(("Int","String"),("""."""," "))
+    "var a : Int = String.mkString".findReplace(matches) should equal("var a : String = String mkString")
   }
 
   "findReplaceWords()" should "preserve the glue between words" in {
@@ -236,10 +241,10 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   it should "ignore case when ordered to" in {
-    sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (a, b) => (a.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
+    sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (word, b) => (word.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
   }
 
-  it should "not perform recursive replacemens" in {
+  it should "not perform recursive replacements" in {
     "bar foo".findReplaceWords( caseSensitive = false, fr=fooMatchSequence)(Whitespace) should equal("foo bla")
   }
 
@@ -253,6 +258,40 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
 
   it should "honor case when asked to" in {
     sentence.findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("Rain Rain in spain.")
+  }
+
+  it should "ignore the empty string" in {
+    "".findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("")
+  }
+
+  it should "not perform recursive replacements" in {
+    "bar foo".findAllReplace(caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))) should equal("foo bla")
+  }
+
+  "findAllReplaceWords()" should "preserve the glue between words" in {
+    sentence.findAllReplaceWords(Seq((Seq("RAIN"), "Rain")), caseSensitive = false)(Whitespace) should equal("The Rain in spain.")
+  }
+
+  it should "honor case when asked to" in {
+    sentence.findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("Rain Rain in spain.")
+  }
+
+  it should "ignore the empty string" in {
+    "".findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("")
+  }
+
+  it should "not perform recursive replacements" in {
+    "bar foo".findAllReplaceWords( caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla")))(Whitespace) should equal("foo bla")
+  }
+
+  "toWords()" should "split a string based on a particular splitter" in {
+    sentence.toWords(WhitespaceOrUnderscore).toStream should contain allOf("The", "rain", "in", "spain.")
+    sentence.toWords(Whitespace).toStream should contain allOf("The", "rain", "in", "spain.")
+  }
+
+  "convert()" should "convert a string based on some convertion function" in {
+    "123".convert(java.lang.Integer.parseInt).get should equal (123)
+    """Notanint""".convert(java.lang.Integer.parseInt) should equal (None)
   }
 }
 
