@@ -250,5 +250,9 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   "findAllReplace()" should "preserve the glue between words" in {
     sentence.findAllReplace(Seq((Seq("rain"), "Rain")), caseSensitive = false) should equal("The Rain in spain.")
   }
+
+  it should "honor case when asked to" in {
+    sentence.findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("Rain Rain in spain.")
+  }
 }
 
