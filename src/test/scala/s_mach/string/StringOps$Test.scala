@@ -186,6 +186,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "var a : Int = String.mkString".findRegexReplaceMatch(matches) should equal("var a : String = String mkString")
   }
 
+  it should "not perform any replacements if no words match the sequence of replacement" in {
+    val matches = Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
+    sentence.findRegexReplaceMatch(matches) should equal (sentence)
+  }
+
   "findRegexReplace()" should "replace all matches of a sequence of regexes with a paired string" in {
     val matches = Seq(("rain".r, "heavy rain"), ("spain".r, "Spain"))
     sentence.findRegexReplace(matches) should equal ("The heavy rain in Spain.")
