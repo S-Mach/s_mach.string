@@ -212,23 +212,28 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
-    val matches = Seq(("rain", "heavy rain"), ("spain", "Spain"))
+    val matches = Seq(("rain", "heavy rain"), ("spain.", "Spain."))
     sentence.findReplace(caseSensitive =  true , fr = matches) should equal ("The heavy rain in Spain.")
   }
 
+  "findReplace()" should "be aware of case" in {
+    val matches = Seq(("RAIN", "heavy rain"), ("SPAIN", "Spain"))
+    sentence.findReplace(caseSensitive =  false , fr = matches) should equal ("The heavy rain in Spain.")
+  }
+
   it should "not perform recursive replacements" in {
-    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
-    "bar foo".findRegexReplace(matches) should equal("foo bla")
+    val matches = Seq(("bar","foo"),("foo","bla"))
+    "bar foo".findReplace(matches) should equal("foo bla")
   }
 
   it should "ignore empty strings" in {
-    val matches = Seq(("bar".r,"foo"),("foo".r,"bla"))
-    "".findRegexReplace(matches) should equal("")
+    val matches = Seq(("bar","foo"),("foo","bla"))
+    "".findReplace(matches) should equal("")
   }
 
   it should "pass this test" in {
-    val matches = Seq(("Int".r,"String"),("\\.".r," "))
-    "var a : Int = String.mkString".findRegexReplace( matches) should equal("var a : String = String mkString")
+    val matches = Seq(("Int","String"),("""."""," "))
+    "var a : Int = String.mkString".findReplace(matches) should equal("var a : String = String mkString")
   }
 
   "findReplaceWords()" should "preserve the glue between words" in {
@@ -236,7 +241,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   it should "ignore case when ordered to" in {
-    sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (a, b) => (a.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
+    sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (word, b) => (word.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
   }
 
   it should "not perform recursive replacemens" in {

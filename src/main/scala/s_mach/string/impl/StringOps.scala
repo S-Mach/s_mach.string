@@ -50,7 +50,7 @@ object StringOps {
     */
   def findRegexReplaceMatch(s: String, zomRegex: Seq[(Regex, Match => String)]) : String = {
     if(s.nonEmpty) {
-      val matchedRegions = HashSet[(Int, Int)]()
+      val matchedRegions = collection.mutable.HashSet[(Int, Int)]()
       val willReplace = ArrayBuffer[((Int, Int), String)]()
       for ((regex, matcher) <- zomRegex) {
         regex.findAllMatchIn(s).foreach { match_ =>
@@ -98,7 +98,7 @@ object StringOps {
     fr: Seq[(String, String)]
   ) : String = {
     findRegexReplace(s, fr.map { case (find, replacement) =>
-      val regexFlags = if(caseSensitive) "(?i)" else ""
+      val regexFlags = if(!caseSensitive) "(?i)" else ""
       val regex = (regexFlags + Regex.quote(find)).r
       (regex, replacement)
     })
