@@ -216,7 +216,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.findReplace(caseSensitive =  true , fr = matches) should equal ("The heavy rain in Spain.")
   }
 
-  "findReplace()" should "be aware of case" in {
+  it should "be aware of case" in {
     val matches = Seq(("RAIN", "heavy rain"), ("SPAIN", "Spain"))
     sentence.findReplace(caseSensitive =  false , fr = matches) should equal ("The heavy rain in Spain.")
   }
@@ -244,7 +244,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (word, b) => (word.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
   }
 
-  it should "not perform recursive replacemens" in {
+  it should "not perform recursive replacements" in {
     "bar foo".findReplaceWords( caseSensitive = false, fr=fooMatchSequence)(Whitespace) should equal("foo bla")
   }
 
@@ -260,6 +260,14 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("Rain Rain in spain.")
   }
 
+  it should "ignore the empty string" in {
+    "".findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("")
+  }
+
+  it should "not perform recursive replacements" in {
+    "bar foo".findAllReplace(caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))) should equal("foo bla")
+  }
+
   "findAllReplaceWords()" should "preserve the glue between words" in {
     sentence.findAllReplaceWords(Seq((Seq("RAIN"), "Rain")), caseSensitive = false)(Whitespace) should equal("The Rain in spain.")
   }
@@ -268,8 +276,17 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("Rain Rain in spain.")
   }
 
+  it should "ignore the empty string" in {
+    "".findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("")
+  }
+
+  it should "not perform recursive replacements" in {
+    "bar foo".findAllReplaceWords( caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla")))(Whitespace) should equal("foo bla")
+  }
+
   "toWords()" should "split a string based on a particular splitter" in {
     sentence.toWords(WhitespaceOrUnderscore).toStream should contain allOf("The", "rain", "in", "spain.")
+    sentence.toWords(Whitespace).toStream should contain allOf("The", "rain", "in", "spain.")
   }
 
   "convert()" should "convert a string based on some convertion function" in {
