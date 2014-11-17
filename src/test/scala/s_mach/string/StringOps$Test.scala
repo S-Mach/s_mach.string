@@ -259,5 +259,22 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   it should "honor case when asked to" in {
     sentence.findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("Rain Rain in spain.")
   }
+
+  "findAllReplaceWords()" should "preserve the glue between words" in {
+    sentence.findAllReplaceWords(Seq((Seq("RAIN"), "Rain")), caseSensitive = false)(Whitespace) should equal("The Rain in spain.")
+  }
+
+  it should "honor case when asked to" in {
+    sentence.findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("Rain Rain in spain.")
+  }
+
+  "toWords()" should "split a string based on a particular splitter" in {
+    sentence.toWords(WhitespaceOrUnderscore).toStream should contain allOf("The", "rain", "in", "spain.")
+  }
+
+  "convert()" should "convert a string based on some convertion function" in {
+    "123".convert(java.lang.Integer.parseInt).get should equal (123)
+    """Notanint""".convert(java.lang.Integer.parseInt) should equal (None)
+  }
 }
 
