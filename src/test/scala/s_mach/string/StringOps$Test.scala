@@ -102,6 +102,10 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     singleWord.toProperCase should equal(hello)
   }
 
+  it should "just capitalize single letters" in {
+    "a".toProperCase should equal("A")
+  }
+
   it should "leave strings that begin with a capital letter intact" in {
     hello.toProperCase should equal(hello)
   }
