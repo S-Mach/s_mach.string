@@ -52,12 +52,20 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     Whitespace.splitWithGlue("aa ").toStream should contain (("aa", " "))
   }
 
+  it should "split a string and maintain its glue correctly when glue occurs first" in {
+    Whitespace.splitWithGlue(" aa ").toStream should contain.inOrderOnly(("", " "), ("aa", " "))
+  }
+
+  it should "pass this slightly harder test" in {
+    Whitespace.splitWithGlue(" aa a ").toStream should contain.inOrderOnly(("", " "), ("aa", " "), ("a", " "))
+  }
+
   it should "degenerate to regular splitting when splitting a string with no glue" in {
-    Whitespace.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+    Whitespace.splitWithGlue(singleWord).toStream should contain only(("hello!", ""))
   }
 
   it should """return an iterator of ("","") on an empty string"""" in {
-    Whitespace.splitWithGlue("").toStream should contain (("", ""))
+    Whitespace.splitWithGlue("").toStream should contain only(("", ""))
   }
 
   "Whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {
@@ -101,6 +109,10 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     WhitespaceOrUnderscore.splitWithGlue("aa ").toStream should contain (("aa", " "))
   }
 
+  it should "split a string and maintain its glue correctly with mixed spaces and underscores" in {
+    WhitespaceOrUnderscore.splitWithGlue("_a_aa ").toStream should contain inOrderOnly(("","_"),("a","_"),("aa", " "))
+  }
+
   it should "degenerate to regular splitting when splitting a string with no glue" in {
     WhitespaceOrUnderscore.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
   }
@@ -130,12 +142,6 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
     CamelCase.split("").toStream should contain ("")
   }
 
-  // it should "split a string and maintain its glue correctly" in {
-  //   CamelCase.splitWithGlue("abcDef").toStream should contain (("abc", ""), ("Def", ""))
-  //   CamelCase.splitWithGlue("abc Def").toStream should contain (("abc", " "), ("Def", ""))
-  //   CamelCase.splitWithGlue(" abc Def").toStream should contain (("", " "),("abc", " "), ("Def", ""))
-  // }
-
   it should "degenerate to regular splitting when splitting a string with no glue" in {
     CamelCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
   }
@@ -154,6 +160,14 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "Camel",
       "Case"
       )
+  }
+
+  it should "degenerate to regular splitting when splitting a string with no glue" in {
+    PascalCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  }
+
+  it should """return an iterator of ("","") on an empty string"""" in {
+    PascalCase.splitWithGlue("").toStream should contain (("", ""))
   }
 
 }

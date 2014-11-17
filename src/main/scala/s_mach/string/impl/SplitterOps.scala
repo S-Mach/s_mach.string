@@ -43,7 +43,7 @@ object SplitterOps {
       case Some(beginGlue) =>
         if (beginGlue.start == 0) {
           Iterator(("", beginGlue.toString())) ++
-            glueDetector.split(s).sliding(2, 2).map { a => if (a.length == 2) (a(1), a(0)) else (a(0), "")} //voodoo
+            glueDetector.split(s).tail.sliding(2, 2).map { a => if (a.length == 2) (a(0), a(1)) else (a(0), "")} //voodoo
         } else {
           glueDetector.split(s).sliding(2, 2).map { a => if (a.length == 2) (a(0), a(1)) else (a(0), "")}
         }
