@@ -34,7 +34,7 @@ Examples
 ~~~~~~~~
 
 [source,scala]
-
+----
 import s_mach.string._
 import s_mach.string.WordSplitter._
 
@@ -69,3 +69,4 @@ val spacingEnhanced = Whitespace.splitWithGlue(spacing)
 //but if you don't want the space...
 spacingEnhanced.collapseWhitespace.findReplace(Seq(("( ", "("), (" )", ")")), false)
 //yields: Int A = (B * D);
+----
