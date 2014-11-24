@@ -6,4 +6,68 @@ v1,06-Oct-2014
 
 image:https://travis-ci.org/S-Mach/s_mach.string.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.string"]  image:https://coveralls.io/repos/S-Mach/s_mach.string/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.string"] https://github.com/S-Mach/s_mach.string[Code] http://s-mach.github.io/s_mach.string/#s_mach.string.package[Scaladoc]
 
-*UNDER CONSTRUCTION*
++s_mach.string+ is an open-source Scala library that provides functions
+for string manipulation at the word level or higher. In particular it
+has functions to perform find-replace on strings in many different ways and
+different ways to split strings particularly suited for programming syntax's (camel case, pascal case, and
+snake case).
+
+Features
+~~~~~~~~
+
+* Find-replace using a variety of input types.
+
+* String splitting based on different delimiting rules
+** Split a string based on whitespace, underscores_and whitespace, PascalCase, snakeCase.
+*** Splitting a string with the wrong splitter type may give strange results.
+** Split and preserve the "glue" between split words for reconstructing the original string's structure.
+
+* String transformations such as:
+** +def toCamelCase(implicit words:WordSplitter)+
+** +def collapseWhitespace : String+
+** +def toDoubleOpt : Option[Double]+
+
++s_mach.string+ enhances basic Scala Strings by an implicit conversion. +
+Importing the +s_mach.string+ package object along with any
+desired +WordSplitter+ s makes available all of the library's functions.
+
+Examples
+~~~~~~~~
+
+[source,scala]
+----
+import s_mach.string._
+import s_mach.string.WordSplitter._
+
+val sentence = "the_rain_in_spain_falls_on_the_plain"
+sentence.toTitleCase(WhitespaceOrUnderscore)
+//yields: The Rain In Spain Falls On The Plain
+
+sentence.findReplaceWords(Seq(("spain", "france"),("rain","snow")), false)(WhitespaceOrUnderscore)
+  .toWords(WhitespaceOrUnderscore)
+  .map(_.toTitleCase)
+  .mkString(" ")
+//yields: The Snow In France Falls On The Plain
+
+val cCode = "pthread_mutex_lock* my_lock;"
+cCode.toWords(Whitespace).map(_.toCamelCase(WhitespaceOrUnderscore)).mkString(" ")
+//yields: pthreadMutexLock* myLock;
+
+val pCode = "pthread_mutex_lock* my_lock = some_other_value + c_pointer_shenanigans;"
+dCode.toWords(Whitespace).map(_.toCamelCase(WhitespaceOrUnderscore)).mkString(" ")
+//yields: pthreadMutexLock* myLock = someOtherValue + cPointerShenanigans;
+
+pCode.toWords(Whitespace).map(_.toPascalCase).mkString(" ")
+//yields: PthreadMutexLock* MyLock = SomeOtherValue + CPointerShenanigans;
+
+//if you need to preserve the original spaces between words, you can.
+val spacing = "int a = (  b *   d );"
+val spacingEnhanced = Whitespace.splitWithGlue(spacing)
+  .map{ case (content, glue) => content.toTitleCase + glue }
+  .mkString
+//yields: Int A = (  B *   D );
+
+//but if you don't want the space...
+spacingEnhanced.collapseWhitespace.findReplace(Seq(("( ", "("), (" )", ")")), false)
+//yields: Int A = (B * D);
+----
