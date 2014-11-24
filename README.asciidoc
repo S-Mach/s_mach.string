@@ -29,7 +29,7 @@ Features
 
 +s_mach.string+ enhances basic Scala Strings by an implicit conversion. +
 Importing the +s_mach.string+ package object along with any
-desired +WordSpliiter+ s makes available all of the library's functions.
+desired +WordSplitter+ s makes available all of the library's functions.
 
 Examples
 ~~~~~~~~
