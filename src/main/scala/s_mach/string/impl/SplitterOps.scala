@@ -25,7 +25,7 @@ object SplitterOps {
 
   val magicWhiteSpace = "(?<=\\S)(?=\\s)|(?<=\\s)(?=\\S)".r
   val magicWhitespaceOrUnderscores= "(?<=\\S)(?=\\s)|(?<=\\s)(?=\\S)|(?<=[^_])(?=_)|(?<=_)(?=[^_])".r
-  val magicCamelOrPascal = "(?<=[^A-Z])(?=[A-Z])".r
+  val magicCase = "(?<=[a-z])(?=[A-Z])".r
   val whiteSpace = """\s+""".r
   val whiteSpaceOrUnderscores = """(\s|_)+""".r
   val allLowerPrefix = """[a-z_]+""".r
@@ -87,25 +87,14 @@ object SplitterOps {
     override def split(s: String): Iterator[String] = whiteSpaceOrUnderscores.split(s).iterator
   }
 
-  class CamelCaseWordSplitter extends WordSplitter {
+  class CaseWordSplitter extends WordSplitter {
 
     override def splitWithGlue(s: String): Iterator[(String, String)] = {
-      glueSplit(magicCamelOrPascal, capitalizedWord, s)
+      split(s).map((_,""))
     }
 
     override def split(s: String): Iterator[String] = {
-      splitterAccumulate(allLowerPrefix.findFirstIn(s), s, capitalizedWord)
-    }
-  }
-
-  class PascalCaseWordSplitter extends WordSplitter {
-
-    override def splitWithGlue(s: String): Iterator[(String, String)] = {
-      glueSplit(magicCamelOrPascal, capitalizedWord, s)
-    }
-
-    override def split(s: String): Iterator[String] = {
-      splitterAccumulate(None, s, capitalizedWord)
+      magicCase.split(s).toIterator
     }
   }
 }

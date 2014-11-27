@@ -42,6 +42,6 @@ trait WordSplitter {
 object WordSplitter {
   object Whitespace extends WhitespaceWordSplitter
   object WhitespaceOrUnderscore extends WhitespaceOrUnderscoreWordSplitter
-  object CamelCase extends CamelCaseWordSplitter
-  object PascalCase extends PascalCaseWordSplitter
+  object CamelCase extends CaseWordSplitter
+  object PascalCase extends CaseWordSplitter
 }

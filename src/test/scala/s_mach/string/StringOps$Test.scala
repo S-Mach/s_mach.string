@@ -131,7 +131,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.toTitleCase(WhitespaceOrUnderscore) should equal("The Rain In Spain.")
     sentence.toTitleCase(Whitespace) should equal("The Rain In Spain.")
     simpleCamelCase.toTitleCase(CamelCase) should equal("Simple Camel Case")
-    simpleCamelCase.toTitleCase(PascalCase) should equal("Camel Case")
+    simpleCamelCase.toTitleCase(PascalCase) should equal("Simple Camel Case")
   }
 
   "toCamelCase()" should "transform a sequence of strings into camelCase" in {

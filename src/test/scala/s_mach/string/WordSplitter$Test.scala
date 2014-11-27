@@ -42,6 +42,12 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "println(a)"
     )
     Whitespace.split(singleWord).toStream should contain only "hello!"
+    Whitespace.splitWithGlue(statements).toStream should contain allOf (
+      ("a[i]"," "),
+      ("="," "),
+      ("a[1];","\n"),
+      ("println(a)","")
+    )
   }
 
   it should "return an iterator with an empty string if it can't split" in {
@@ -148,6 +154,14 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "With",
       "WORDSINCAPSNnot",
       "Caught"
+    )
+    CamelCase.splitWithGlue(harderCamelCase).toStream should contain allOf (
+      ("simple",""),
+      ("Camel",""),
+      ("Case",""),
+      ("With",""),
+      ("WORDSINCAPSNnot",""),
+      ("Caught","")
     )
   }
 
