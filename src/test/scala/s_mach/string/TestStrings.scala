@@ -36,7 +36,7 @@ trait TestStrings {
   val complicated3 = "1 Hello! 1.0"
   val emptyString = ""
   val someUnderscores = "test_variable_with_underscores"
-  val moreUnderscores = "test_variable_with_underscores\nanother variable_for testing"
+  val moreUnderscores = "_test_variable_with_underscores\nanother variable_for testing  "
   val simpleCamelCase = "simpleCamelCase"
   val harderCamelCase = "simpleCamelCaseWithWORDSINCAPSNnotCaught"
   val pascalCase = "PascalCase"

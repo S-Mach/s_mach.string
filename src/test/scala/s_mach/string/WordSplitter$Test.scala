@@ -89,6 +89,7 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "underscores"
     )
     WhitespaceOrUnderscore.split(moreUnderscores).toSeq should equal ( List(
+      "",
       "test",
       "variable",
       "with",
@@ -97,6 +98,18 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "variable",
       "for",
       "testing"
+      )
+    )
+    WhitespaceOrUnderscore.splitWithGlue(moreUnderscores).toList should equal ( List(
+      ("","_"),
+      ("test","_"),
+      ("variable","_"),
+      ("with","_"),
+      ("underscores","\n"),
+      ("another"," "),
+      ("variable","_"),
+      ("for"," "),
+      ("testing","  ")
       )
     )
   }
