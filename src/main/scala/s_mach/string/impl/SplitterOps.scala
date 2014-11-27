@@ -24,7 +24,7 @@ import scala.util.matching.Regex
 object SplitterOps {
 
   val magicWhiteSpace = "(?<=\\S)(?=\\s)|(?<=\\s)(?=\\S)".r
-  val magicWhitespaceOrUnderscores= "(?<=[^_])(?=(_|\\s))|(?<=(\\s|_))(?=[^_\\s])".r
+  val magicWhitespaceOrUnderscores= "(?<=\\S)(?=\\s)|(?<=\\s)(?=\\S)|(?<=[^_])(?=_)|(?<=_)(?=[^_])".r
   val magicCamelOrPascal = "(?<=[^A-Z])(?=[A-Z])".r
   val whiteSpace = """\s+""".r
   val whiteSpaceOrUnderscores = """(\s|_)+""".r
