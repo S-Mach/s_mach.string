@@ -25,10 +25,11 @@ support can be added if there is interest)
 == Versioning
 +s_mach.string+ uses semantic versioning (http://semver.org/). +s_mach.string+
 does not use the package private modifier. Instead, all code files outside of
-the "impl" folder form the public interface and are governed by the rules of
-semantic versioning. Code files inside the +s_mach.string.impl+ package may be
-used by downstream applications and libraries. However, no guarantees are made
-as to the stability or interface of code in the +s_mach.string.impl+ package.
+the +s_mach.string.impl+ package form the public interface and are governed by
+the rules of semantic versioning. Code files inside the +s_mach.string.impl+
+package may be used by downstream applications and libraries. However, no
+guarantees are made as to the stability or interface of code in the
++s_mach.string.impl+ package between versions.
 
 == Features
 
