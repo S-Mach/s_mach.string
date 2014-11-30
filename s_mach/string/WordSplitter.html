@@ -47,12 +47,16 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a word splitter that allows splitting a string into &quot;words&quot; and
+&quot;glue&quot;. Each word splitter defines words and glue differently. A whitespace
+splitter assigns whitespace runs as &quot;glue&quot; and non-whitespace runs as
+&quot;words&quot;. A capitalization-based splitter creates words when capitalization
+changes from</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="WordSplitter$$CamelCase$.html" class="extype" name="s_mach.string.WordSplitter.CamelCase">CamelCase</a>, <a href="impl/SplitterOps$$CamelCaseWordSplitter.html" class="extype" name="s_mach.string.impl.SplitterOps.CamelCaseWordSplitter">CamelCaseWordSplitter</a>, <a href="WordSplitter$$PascalCase$.html" class="extype" name="s_mach.string.WordSplitter.PascalCase">PascalCase</a>, <a href="impl/SplitterOps$$PascalCaseWordSplitter.html" class="extype" name="s_mach.string.impl.SplitterOps.PascalCaseWordSplitter">PascalCaseWordSplitter</a>, <a href="WordSplitter$$Whitespace$.html" class="extype" name="s_mach.string.WordSplitter.Whitespace">Whitespace</a>, <a href="WordSplitter$$WhitespaceOrUnderscore$.html" class="extype" name="s_mach.string.WordSplitter.WhitespaceOrUnderscore">WhitespaceOrUnderscore</a>, <a href="impl/SplitterOps$$WhitespaceOrUnderscoreWordSplitter.html" class="extype" name="s_mach.string.impl.SplitterOps.WhitespaceOrUnderscoreWordSplitter">WhitespaceOrUnderscoreWordSplitter</a>, <a href="impl/SplitterOps$$WhitespaceWordSplitter.html" class="extype" name="s_mach.string.impl.SplitterOps.WhitespaceWordSplitter">WhitespaceWordSplitter</a></div>
+            <div class="subClasses hiddenContent"><a href="impl/RegexCharTransitionWordSplitterImpl.html" class="extype" name="s_mach.string.impl.RegexCharTransitionWordSplitterImpl">RegexCharTransitionWordSplitterImpl</a>, <a href="impl/RegexCharWordSplitterImpl.html" class="extype" name="s_mach.string.impl.RegexCharWordSplitterImpl">RegexCharWordSplitterImpl</a></div>
           </div></div>
         
 
@@ -110,28 +114,31 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Splits a string based on some boundary condition</p><div class="fullcomment"><div class="comment cmt"><p>Splits a string based on some boundary condition</p></div><dl class="paramcmts block"><dt class="param">s</dt><dd class="cmt"><p>string to split</p></dd><dt>returns</dt><dd class="cmt"><p>Iterator of the elements created from the split
+      <p class="shortcomment cmt">Splits a string into words based on some boundary condition ignoring
+any &quot;glue&quot; characters between any two words.</p><div class="fullcomment"><div class="comment cmt"><p>Splits a string into words based on some boundary condition ignoring
+any &quot;glue&quot; characters between any two words.</p></div><dl class="paramcmts block"><dt class="param">s</dt><dd class="cmt"><p>string to split into words</p></dd><dt>returns</dt><dd class="cmt"><p>Iterator of the words created from the split
 </p></dd></dl></div>
     </li><li name="s_mach.string.WordSplitter#splitWithGlue" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="splitWithGlue(s:String):Iterator[(String,String)]"></a>
-      <a id="splitWithGlue(String):Iterator[(String,String)]"></a>
+      <a id="splitWithGlue(s:String):s_mach.string.WordSplitResult"></a>
+      <a id="splitWithGlue(String):WordSplitResult"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">splitWithGlue</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Iterator">Iterator</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>
+        <span class="name">splitWithGlue</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="WordSplitResult.html" class="extype" name="s_mach.string.WordSplitResult">WordSplitResult</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.WordSplitter@splitWithGlue(s:String):Iterator[(String,String)]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.WordSplitter@splitWithGlue(s:String):s_mach.string.WordSplitResult" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Splits a string based on some boundary condition and also preserves
-the characters that were between the boundaries.</p><div class="fullcomment"><div class="comment cmt"><p>Splits a string based on some boundary condition and also preserves
-the characters that were between the boundaries.
-([content], [glue])</p></div><dl class="paramcmts block"><dt class="param">s</dt><dd class="cmt"><p>string to split</p></dd><dt>returns</dt><dd class="cmt"><p>Iterator of the split and the intermediate characters
+      <p class="shortcomment cmt">Splits a string into words based on some boundary condition and preserves
+the &quot;glue&quot; characters that were between the boundaries, including the
+leading and trailing glue.</p><div class="fullcomment"><div class="comment cmt"><p>Splits a string into words based on some boundary condition and preserves
+the &quot;glue&quot; characters that were between the boundaries, including the
+leading and trailing glue.</p></div><dl class="paramcmts block"><dt class="param">s</dt><dd class="cmt"><p>string to split</p></dd><dt>returns</dt><dd class="cmt"><p>a lazy word split result
 </p></dd></dl></div>
     </li></ol>
             </div>

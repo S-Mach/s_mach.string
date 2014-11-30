@@ -47,7 +47,10 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Note1 : ensures recursive replacements cannot occur. Once a section of the
+string has been matched, it cannot be matched again later. All replacements
+occur only after all  matching has finished.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -106,7 +109,25 @@
       </a>
     </span>
       
-    </li><li name="s_mach.string.WordSplitter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.string.WordSplitResult" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="WordSplitResultextendsAnyRef"></a>
+      <a id="WordSplitResult:WordSplitResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="WordSplitResult.html"><span class="name">WordSplitResult</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package@WordSplitResultextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for the lazy result of a word split
+</p>
+    </li><li name="s_mach.string.WordSplitter" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="WordSplitterextendsAnyRef"></a>
       <a id="WordSplitter:WordSplitter"></a>
       <h4 class="signature">
@@ -122,7 +143,12 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">A trait for a word splitter that allows splitting a string into &quot;words&quot; and
+&quot;glue&quot;.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a word splitter that allows splitting a string into &quot;words&quot; and
+&quot;glue&quot;. Each word splitter defines words and glue differently. A whitespace
+splitter assigns whitespace runs as &quot;glue&quot; and non-whitespace runs as
+&quot;words&quot;. A capitalization-based splitter creates words when capitalization
+changes from</p></div></div>
     </li></ol>
             </div>
 
@@ -130,7 +156,41 @@
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="s_mach.string.WordSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="s_mach.string.RegexCharTransitionWordSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RegexCharTransitionWordSplitter"></a>
+      <a id="RegexCharTransitionWordSplitter:RegexCharTransitionWordSplitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RegexCharTransitionWordSplitter$.html"><span class="name">RegexCharTransitionWordSplitter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package@RegexCharTransitionWordSplitter" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.string.RegexCharWordSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RegexCharWordSplitter"></a>
+      <a id="RegexCharWordSplitter:RegexCharWordSplitter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RegexCharWordSplitter$.html"><span class="name">RegexCharWordSplitter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package@RegexCharWordSplitter" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.string.WordSplitter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="WordSplitter"></a>
       <a id="WordSplitter:WordSplitter"></a>
       <h4 class="signature">

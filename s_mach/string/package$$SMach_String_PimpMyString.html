@@ -181,6 +181,29 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="s_mach.string.SMach_String_PimpMyString#collapseGlue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="collapseGlue(glueSubst:String)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
+      <a id="collapseGlue(String)(WordSplitter):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">collapseGlue</span><span class="params">(<span name="glueSubst">glueSubst: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@collapseGlue(glueSubst:String)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Collapse all glue to the same string and trim all leading and trailing
+glue</p><div class="fullcomment"><div class="comment cmt"><p>Collapse all glue to the same string and trim all leading and trailing
+glue</p></div><dl class="paramcmts block"><dt class="param">glueSubst</dt><dd class="cmt"><p>string to replace glue runs with</p></dd><dt>returns</dt><dd class="cmt"><p>string with all glue collapsed to glueSubst and all
+        leading and trailing glue trimmed</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#collapseWhitespace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="collapseWhitespace:String"></a>
       <a id="collapseWhitespace:String"></a>
@@ -218,7 +241,7 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>None if String fails to convert to A OR Some(A) if string can be
+      <p class="shortcomment cmt">Parse a string to some type</p><div class="fullcomment"><div class="comment cmt"><p>Parse a string to some type</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>function to parse string to type</p></dd><dt>returns</dt><dd class="cmt"><p>None if String fails to convert to A OR Some(A) if string can be
         converted to a valid A value</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -239,13 +262,13 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with suffix appended if string does not end with suffix
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">suffix</dt><dd class="cmt"><p>string to ensure is at the end of the string</p></dd><dt>returns</dt><dd class="cmt"><p>string with suffix appended if string does not end with suffix
 </p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#findAllReplace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="findAllReplace(fr:Seq[(Seq[String],String)],caseSensitive:Boolean):String"></a>
+      <a id="findAllReplace(zomFindReplace:Seq[(Seq[String],String)],caseSensitive:Boolean):String"></a>
       <a id="findAllReplace(Seq[(Seq[String],String)],Boolean):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -253,21 +276,24 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">findAllReplace</span><span class="params">(<span name="fr">fr: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">findAllReplace</span><span class="params">(<span name="zomFindReplace">zomFindReplace: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findAllReplace(fr:Seq[(Seq[String],String)],caseSensitive:Boolean):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findAllReplace(zomFindReplace:Seq[(Seq[String],String)],caseSensitive:Boolean):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find*,replace) pair, all
-        occurrences of find are substituted with replace. Ensures
-        recursive replacements cannot occur.</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">Replace string sections by matching from a set of string literals and
+replacing with a replacement string literal.</p><div class="fullcomment"><div class="comment cmt"><p>Replace string sections by matching from a set of string literals and
+replacing with a replacement string literal.</p></div><dl class="paramcmts block"><dt class="param">zomFindReplace</dt><dd class="cmt"><p>zero or more (find string literal, replace string
+                      literal) tuples</p></dd><dt class="param">caseSensitive</dt><dd class="cmt"><p>TRUE to for case-sensitive matching FALSE otherwise</p></dd><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find*,replace) pair, any
+        occurrences of any find are substituted with replace. See note1
+        above.</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#findAllReplaceWords" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="findAllReplaceWords(fr:Seq[(Seq[String],String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
+      <a id="findAllReplaceWords(zomFindReplace:Seq[(Seq[String],String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="findAllReplaceWords(Seq[(Seq[String],String)],Boolean)(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -275,16 +301,19 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">findAllReplaceWords</span><span class="params">(<span name="fr">fr: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">findAllReplaceWords</span><span class="params">(<span name="zomFindReplace">zomFindReplace: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>], <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findAllReplaceWords(fr:Seq[(Seq[String],String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findAllReplaceWords(zomFindReplace:Seq[(Seq[String],String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find*,replace) pair, all
-        occurrences of find as a word are substituted with replace.
-        Ensures recursive replacements cannot occur.</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">Replace words in string sections by matching from a set of string
+literals to a replacement string literal.</p><div class="fullcomment"><div class="comment cmt"><p>Replace words in string sections by matching from a set of string
+literals to a replacement string literal.</p></div><dl class="paramcmts block"><dt class="param">zomFindReplace</dt><dd class="cmt"><p>zero or more (find string literal, replace string
+                      literal) tuples</p></dd><dt class="param">caseSensitive</dt><dd class="cmt"><p>TRUE to for case-sensitive matching FALSE otherwise</p></dd><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find*,replace) pair, any
+        occurrences of any find are substituted with replace. See note1
+        above.</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -304,8 +333,11 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all occurrences of regex replaced with the paired
-        string. Ensures recursive replacements cannot occur.</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">Replace string sections by matching regex and replacing with a string
+literal.</p><div class="fullcomment"><div class="comment cmt"><p>Replace string sections by matching regex and replacing with a string
+literal.</p></div><dl class="paramcmts block"><dt class="param">zomRegex</dt><dd class="cmt"><p>zero or more (regex, replacement string literal) tuples</p></dd><dt>returns</dt><dd class="cmt"><p>string with all occurrences of regex replaced with the paired
+        string. See note1 above.
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -325,15 +357,17 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all occurrences of regex replaced with the paired
-        string returned by supplying the match generated by the regex.
-        Ensures recursive replacements cannot occur.
+      <p class="shortcomment cmt">Replace string sections by matching regex and replacing with result of
+match function.</p><div class="fullcomment"><div class="comment cmt"><p>Replace string sections by matching regex and replacing with result of
+match function.</p></div><dl class="paramcmts block"><dt class="param">zomRegex</dt><dd class="cmt"><p>zero or more (regex, match function) tuples</p></dd><dt>returns</dt><dd class="cmt"><p>string with all occurrences of regexes replaced with the string
+        returned by passing the match generated by the regex to the
+        paired function. See note1 above.
 </p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#findReplace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="findReplace(fr:Seq[(String,String)],caseSensitive:Boolean):String"></a>
+      <a id="findReplace(zomFindReplace:Seq[(String,String)],caseSensitive:Boolean):String"></a>
       <a id="findReplace(Seq[(String,String)],Boolean):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -341,22 +375,25 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">findReplace</span><span class="params">(<span name="fr">fr: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">findReplace</span><span class="params">(<span name="zomFindReplace">zomFindReplace: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findReplace(fr:Seq[(String,String)],caseSensitive:Boolean):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findReplace(zomFindReplace:Seq[(String,String)],caseSensitive:Boolean):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find,replace) pair, all
-        occurrences of find are substituted with replace. Ensures
-        recursive replacements cannot occur.
+      <p class="shortcomment cmt">Replace string sections by matching string literal with a replacement
+string literal.</p><div class="fullcomment"><div class="comment cmt"><p>Replace string sections by matching string literal with a replacement
+string literal.</p></div><dl class="paramcmts block"><dt class="param">zomFindReplace</dt><dd class="cmt"><p>zero or more (find string literal, replace string
+                      literal) tuples</p></dd><dt class="param">caseSensitive</dt><dd class="cmt"><p>TRUE to for case-sensitive matching FALSE otherwise</p></dd><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find,replace) pair, all
+        occurrences of find that match regions of the string substituted
+        with replace. See note1 above.
 </p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#findReplaceWords" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="findReplaceWords(fr:Seq[(String,String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
+      <a id="findReplaceWords(zomFindReplace:Seq[(String,String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="findReplaceWords(Seq[(String,String)],Boolean)(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -364,16 +401,19 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">findReplaceWords</span><span class="params">(<span name="fr">fr: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">findReplaceWords</span><span class="params">(<span name="zomFindReplace">zomFindReplace: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>, <span name="caseSensitive">caseSensitive: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findReplaceWords(fr:Seq[(String,String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@findReplaceWords(zomFindReplace:Seq[(String,String)],caseSensitive:Boolean)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find,replace) pair, all
-        occurrences of find as a word are substituted with replace.
-        Ensures recursive replacements cannot occur.
+      <p class="shortcomment cmt">Replace words in a string by matching string literal and replacing with a
+replacement string literal.</p><div class="fullcomment"><div class="comment cmt"><p>Replace words in a string by matching string literal and replacing with a
+replacement string literal.</p></div><dl class="paramcmts block"><dt class="param">zomFindReplace</dt><dd class="cmt"><p>zero or more (find string literal, replace string
+                      literal) tuples</p></dd><dt class="param">caseSensitive</dt><dd class="cmt"><p>TRUE to for case-sensitive matching FALSE otherwise</p></dd><dt>returns</dt><dd class="cmt"><p>string with all replacements. For each (find,replace) pair, all
+        occurrences of find that match a word exactly are substituted
+        with replace. See note1 above.
 </p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -411,7 +451,7 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>string with all lines indented by n occurrences of s</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>number of spacers to indent with</p></dd><dt class="param">spacer</dt><dd class="cmt"><p>the spacer string to use while indenting</p></dd><dt>returns</dt><dd class="cmt"><p>string with all lines indented by n occurrences of s</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -432,6 +472,27 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="s_mach.string.SMach_String_PimpMyString#mapWords" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="mapWords(f:String=&gt;String)(implicitsplitter:s_mach.string.WordSplitter):String"></a>
+      <a id="mapWords((String)⇒String)(WordSplitter):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">mapWords</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.Predef.String">String</span>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@mapWords(f:String=&gt;String)(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>function to map words</p></dd><dt>returns</dt><dd class="cmt"><p>a string with all words replaced with the result of passing the
+        word to f. all glue is preserved</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#self" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="self:String"></a>
       <a id="self:String"></a>
@@ -450,7 +511,7 @@
     </span>
       
     </li><li name="s_mach.string.SMach_String_PimpMyString#toCamelCase" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toCamelCase(implicitwords:s_mach.string.WordSplitter):String"></a>
+      <a id="toCamelCase(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="toCamelCase(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -458,10 +519,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toCamelCase</span><span class="params">(<span class="implicit">implicit </span><span name="words">words: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">toCamelCase</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toCamelCase(implicitwords:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toCamelCase(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -553,7 +614,7 @@
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#toPascalCase" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toPascalCase(implicitwords:s_mach.string.WordSplitter):String"></a>
+      <a id="toPascalCase(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="toPascalCase(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -561,10 +622,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toPascalCase</span><span class="params">(<span class="implicit">implicit </span><span name="words">words: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">toPascalCase</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toPascalCase(implicitwords:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toPascalCase(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -594,7 +655,7 @@
               
         </dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#toSnakeCase" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toSnakeCase(implicitwords:s_mach.string.WordSplitter):String"></a>
+      <a id="toSnakeCase(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="toSnakeCase(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -602,10 +663,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toSnakeCase</span><span class="params">(<span class="implicit">implicit </span><span name="words">words: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">toSnakeCase</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toSnakeCase(implicitwords:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toSnakeCase(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -631,7 +692,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="s_mach.string.SMach_String_PimpMyString#toTitleCase" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toTitleCase(implicitwords:s_mach.string.WordSplitter):String"></a>
+      <a id="toTitleCase(implicitsplitter:s_mach.string.WordSplitter):String"></a>
       <a id="toTitleCase(WordSplitter):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -639,14 +700,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toTitleCase</span><span class="params">(<span class="implicit">implicit </span><span name="words">words: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">toTitleCase</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toTitleCase(implicitwords:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toTitleCase(implicitsplitter:s_mach.string.WordSplitter):String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>all whitespace collapsed, each word in proper case</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>each word in proper case with glue preserved</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -667,6 +728,26 @@
       </a>
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>all words contained in string</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@inline</span><span class="args">()</span>
+              
+        </dd></dl></div>
+    </li><li name="s_mach.string.SMach_String_PimpMyString#toWordsWithGlue" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toWordsWithGlue(implicitsplitter:s_mach.string.WordSplitter):s_mach.string.WordSplitResult"></a>
+      <a id="toWordsWithGlue(WordSplitter):WordSplitResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toWordsWithGlue</span><span class="params">(<span class="implicit">implicit </span><span name="splitter">splitter: <a href="WordSplitter.html" class="extype" name="s_mach.string.WordSplitter">WordSplitter</a></span>)</span><span class="result">: <a href="WordSplitResult.html" class="extype" name="s_mach.string.WordSplitResult">WordSplitResult</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.string.package$$SMach_String_PimpMyString@toWordsWithGlue(implicitsplitter:s_mach.string.WordSplitter):s_mach.string.WordSplitResult" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>all words and glue contained in string</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
