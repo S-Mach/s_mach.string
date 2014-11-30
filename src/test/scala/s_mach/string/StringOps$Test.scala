@@ -337,6 +337,16 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.toWords(Whitespace).toStream should contain allOf("The", "rain", "in", "spain.")
   }
 
+  "toWordsWithGlue()" should "split a string based on a particular splitter preserving glue" in {
+    sentence.toWordsWithGlue(Whitespace).map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("  1The2 3rain2 3in2  3spain.2  4")
+    sentence.toWordsWithGlue(Whitespace).toString should equal("WordSplitResult(LeadingGlue(  ),Word(The),Glue( ),Word(rain),Glue( ),Word(in),Glue(  ),Word(spain.),TrailingGlue(  ))")
+  }
+
   "convert()" should "convert a string based on some convertion function" in {
     "123".convert(java.lang.Integer.parseInt).get should equal (123)
     """Notanint""".convert(java.lang.Integer.parseInt) should equal (None)

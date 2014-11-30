@@ -58,7 +58,7 @@ object RegexCharWordSplitter {
    */
   def apply(glueChars: Seq[Char]) : WordSplitter = {
     val glue = glueChars.mkString
-    new RegexCharWordSplitterImpl(
+    apply(
       singleCharWordRegex = s"[^$glue]".r,
       singleCharGlueRegex = s"[$glue]".r
     )

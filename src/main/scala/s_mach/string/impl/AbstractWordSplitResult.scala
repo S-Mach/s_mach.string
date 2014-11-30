@@ -44,7 +44,7 @@ trait AbstractWordSplitResult extends WordSplitResult {
 
   override def toString = {
     val sb = new StringBuilder
-    sb.append("SplitResult(")
+    sb.append("WordSplitResult(")
     foreach(
       leadingGlue = { s:String => sb.append(s"LeadingGlue($s),") },
       word = { s:String => sb.append(s"Word($s),") },

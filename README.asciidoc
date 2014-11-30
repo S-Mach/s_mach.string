@@ -26,9 +26,9 @@ support can be added if there is interest)
 +s_mach.string+ uses semantic versioning (http://semver.org/). +s_mach.string+
 does not use the package private modifier. Instead, all code files outside of
 the "impl" folder form the public interface and are governed by the rules of
-semantic versioning. Code files inside the "impl" folder may be used by
-downstream applications and libraries. However, no guarantees are made as to the
-stability or interface of code in the "impl" folder.
+semantic versioning. Code files inside the +s_mach.string.impl+ package may be
+used by downstream applications and libraries. However, no guarantees are made
+as to the stability or interface of code in the +s_mach.string.impl+ package.
 
 == Features
 
@@ -38,10 +38,10 @@ to import
 *** +import WordSplitter.Whitespace+
 *** +import WordSplitter.Underscore+
 *** +import WordSplitter.CamelCase+
-** Or supply your own using WordSplitter regex or provide a completely custom
-word splitting implementation
+** Or create a custom RegexCharWordSplitter or RegexCharTransitionWordSplitter
+** Or provide a completely custom word splitting implementation
 ** Split and preserve the "glue" between words for reconstructing the original
-string's structure
+string's structure (see WordSplitResult)
 
 * Find-replace using a variety of input types
 ** Search by regex, String, or Seq[String]
@@ -52,6 +52,7 @@ string's structure
 * Adds utility String methods:
 ** +String.ensureSuffix+
 ** +String.mapWords+
+** +String.collapseGlue+
 ** +String.collapseWhitespace+
 ** +String.toProperCase+
 ** +String.toTitleCase+
@@ -69,7 +70,6 @@ string's structure
 
 == Examples
 
-[source,scala]
 ----
 [info] Starting scala interpreter...
 [info] 
