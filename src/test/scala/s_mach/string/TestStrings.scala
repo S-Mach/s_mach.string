@@ -24,7 +24,7 @@ import scala.util.matching.Regex.Match
  * Set of test strings used in the test classes. do not change.
  */
 trait TestStrings {
-  val sentence = "The rain in spain."
+  val sentence = "  The rain in  spain.  "
   val singleWord = "hello!"
   val statements = "a[i] = a[1];\nprintln(a)"
   val doubleString = "1.0"

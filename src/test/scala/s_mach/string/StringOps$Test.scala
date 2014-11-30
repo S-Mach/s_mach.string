@@ -18,8 +18,6 @@
 */
 package s_mach.string
 
-import s_mach.string._
-
 import org.scalatest.{Matchers, FlatSpec}
 import s_mach.string.WordSplitter.{PascalCase, CamelCase, WhitespaceOrUnderscore, Whitespace}
 
@@ -98,6 +96,10 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     intString.ensureSuffix(hello) should equal(intString + hello)
   }
 
+  "mapWords" should "map only words in a string" in {
+    sentence.mapWords(s => s + '!')(Whitespace) should equal("  The! rain! in!  spain.!  ")
+  }
+
   "toProperCase()" should "capitalize the first word of a string" in {
     singleWord.toProperCase should equal(hello)
   }
@@ -114,8 +116,8 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "".toProperCase should equal("")
   }
 
-  "toTitleCase()" should "collapse whitespace and make words title cased" in {
-    sentence.toTitleCase(Whitespace) should equal("The Rain In Spain.")
+  "toTitleCase()" should "make words title cased" in {
+    sentence.toTitleCase(Whitespace) should equal("  The Rain In  Spain.  ")
   }
 
   it should "only modify the first letter of words" in {
@@ -127,11 +129,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   it should "work with different splitters" in {
-    someUnderscores.toTitleCase(WhitespaceOrUnderscore) should equal("Test Variable With Underscores")
-    sentence.toTitleCase(WhitespaceOrUnderscore) should equal("The Rain In Spain.")
-    sentence.toTitleCase(Whitespace) should equal("The Rain In Spain.")
-    simpleCamelCase.toTitleCase(CamelCase) should equal("Simple Camel Case")
-    simpleCamelCase.toTitleCase(PascalCase) should equal("Simple Camel Case")
+    someUnderscores.toTitleCase(WhitespaceOrUnderscore) should equal("Test_Variable_With_Underscores")
+    sentence.toTitleCase(WhitespaceOrUnderscore) should equal("  The Rain In  Spain.  ")
+    sentence.toTitleCase(Whitespace) should equal("  The Rain In  Spain.  ")
+    simpleCamelCase.toTitleCase(CamelCase) should equal("SimpleCamelCase")
+    simpleCamelCase.toTitleCase(PascalCase) should equal("SimpleCamelCase")
   }
 
   "toCamelCase()" should "transform a sequence of strings into camelCase" in {
@@ -166,13 +168,17 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     simpleCamelCase.toPascalCase(CamelCase) should equal("SimpleCamelCase")
   }
 
-  "collapsWhitespace()" should "remove all extraneous white space" in {
+  "collapseWhitespace()" should "remove all extraneous white space" in {
     "   space and    more space!   ".collapseWhitespace should equal("space and more space!")
+  }
+
+  "collapseGlue()" should "remove all extraneous glue" in {
+    "_   space and  _  more space!  _ ".collapseGlue("_")(WhitespaceOrUnderscore) should equal("space_and_more_space!")
   }
 
   "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
     val matches = Seq(("rain".r, spainMatchFunction), ("spain".r, spainMatchFunction))
-    sentence.findRegexReplaceMatch(matches) should equal("The heavy rain in Spain.")
+    sentence.findRegexReplaceMatch(matches) should equal("  The heavy rain in  Spain.  ")
   }
 
   it should "not perform recursive replacements" in {
@@ -197,7 +203,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
 
   "findRegexReplace()" should "replace all matches of a sequence of regexes with a paired string" in {
     val matches = Seq(("rain".r, "heavy rain"), ("spain".r, "Spain"))
-    sentence.findRegexReplace(matches) should equal ("The heavy rain in Spain.")
+    sentence.findRegexReplace(matches) should equal ("  The heavy rain in  Spain.  ")
   }
 
   it should "not perform recursive replacements" in {
@@ -217,12 +223,12 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
 
   "findReplace()" should "replace all matches of a sequence of strings with a paired string" in {
     val matches = Seq(("rain", "heavy rain"), ("spain.", "Spain."))
-    sentence.findReplace(caseSensitive =  true , fr = matches) should equal ("The heavy rain in Spain.")
+    sentence.findReplace(caseSensitive =  true , zomFindReplace = matches) should equal ("  The heavy rain in  Spain.  ")
   }
 
   it should "be aware of case" in {
     val matches = Seq(("RAIN", "heavy rain"), ("SPAIN", "Spain"))
-    sentence.findReplace(caseSensitive =  false , fr = matches) should equal ("The heavy rain in Spain.")
+    sentence.findReplace(caseSensitive =  false , zomFindReplace = matches) should equal ("  The heavy rain in  Spain.  ")
   }
 
   it should "not perform recursive replacements" in {
@@ -241,51 +247,89 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
   }
 
   "findReplaceWords()" should "preserve the glue between words" in {
-    sentence.findReplaceWords( caseSensitive = true,fr= replacementSequence)(Whitespace) should equal("The Rain in Espana.")
+    sentence.findReplaceWords(
+      caseSensitive = true,
+      zomFindReplace = replacementSequence
+    )(Whitespace) should equal("  The Rain in  Espana.  ")
   }
 
   it should "ignore case when ordered to" in {
-    sentence.findReplaceWords( caseSensitive = false, fr=replacementSequence.map{case (word, b) => (word.toUpperCase, b)})(Whitespace) should equal("The Rain in Espana.")
+    sentence.findReplaceWords(
+      caseSensitive = false,
+      zomFindReplace =replacementSequence.map{ case (word, b) =>
+        (word.toUpperCase, b)
+      }
+    )(Whitespace) should equal("  The Rain in  Espana.  ")
   }
 
   it should "not perform recursive replacements" in {
-    "bar foo".findReplaceWords( caseSensitive = false, fr=fooMatchSequence)(Whitespace) should equal("foo bla")
+    "bar foo".findReplaceWords(
+      caseSensitive = false,
+      zomFindReplace =fooMatchSequence
+    )(Whitespace) should equal("foo bla")
   }
 
   it should "ignore empty strings" in {
-    "".findReplaceWords( caseSensitive = true, fr=replacementSequence)(Whitespace) should equal("")
+    "".findReplaceWords(
+      caseSensitive = true,
+      zomFindReplace =replacementSequence
+    )(Whitespace) should equal("")
   }
 
   "findAllReplace()" should "preserve the glue between words" in {
-    sentence.findAllReplace(Seq((Seq("rain"), "Rain")), caseSensitive = false) should equal("The Rain in spain.")
+    sentence.findAllReplace(
+      Seq((Seq("rain"), "Rain")),
+      caseSensitive = false
+    ) should equal("  The Rain in  spain.  ")
   }
 
   it should "honor case when asked to" in {
-    sentence.findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("Rain Rain in spain.")
+    sentence.findAllReplace(
+      Seq((Seq("rain", "The"), "Rain")),
+      caseSensitive = true
+    ) should equal ("  Rain Rain in  spain.  ")
   }
 
   it should "ignore the empty string" in {
-    "".findAllReplace(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true) should equal ("")
+    "".findAllReplace(
+      Seq((Seq("rain", "The"), "Rain")),
+      caseSensitive = true
+    ) should equal ("")
   }
 
   it should "not perform recursive replacements" in {
-    "bar foo".findAllReplace(caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))) should equal("foo bla")
+    "bar foo".findAllReplace(
+      caseSensitive = false,
+      zomFindReplace = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))
+    ) should equal("foo bla")
   }
 
   "findAllReplaceWords()" should "preserve the glue between words" in {
-    sentence.findAllReplaceWords(Seq((Seq("RAIN"), "Rain")), caseSensitive = false)(Whitespace) should equal("The Rain in spain.")
+    sentence.findAllReplaceWords(
+      Seq((Seq("RAIN"), "Rain")),
+      caseSensitive = false
+    )(Whitespace) should equal("  The Rain in  spain.  ")
   }
 
   it should "honor case when asked to" in {
-    sentence.findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("Rain Rain in spain.")
+    sentence.findAllReplaceWords(
+      Seq((Seq("rain", "The"), "Rain")),
+      caseSensitive = true
+    )(Whitespace) should equal ("  Rain Rain in  spain.  ")
   }
 
   it should "ignore the empty string" in {
-    "".findAllReplaceWords(Seq((Seq("rain", "The"), "Rain")), caseSensitive = true)(Whitespace) should equal ("")
+    "".findAllReplaceWords(
+      Seq((Seq("rain", "The"), "Rain")),
+      caseSensitive = true
+    )(Whitespace) should equal ("")
   }
 
   it should "not perform recursive replacements" in {
-    "bar foo".findAllReplaceWords( caseSensitive = false, fr = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla")))(Whitespace) should equal("foo bla")
+    "bar foo".findAllReplaceWords(
+      caseSensitive = false,
+      zomFindReplace = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))
+    )(Whitespace) should equal("foo bla")
   }
 
   "toWords()" should "split a string based on a particular splitter" in {

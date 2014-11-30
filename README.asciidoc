@@ -1,73 +1,141 @@
 = s_mach.string: String utility library
 Lance Gatlin <lance.gatlin@gmail.com>
-v1,06-Oct-2014
+v1,28-Nov-2014
 :blogpost-status: unpublished
 :blogpost-categories: s_mach, scala
 
 image:https://travis-ci.org/S-Mach/s_mach.string.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.string"]  image:https://coveralls.io/repos/S-Mach/s_mach.string/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.string"] https://github.com/S-Mach/s_mach.string[Code] http://s-mach.github.io/s_mach.string/#s_mach.string.package[Scaladoc]
 
-+s_mach.string+ is an open-source Scala library that provides functions
-for string manipulation at the word level or higher. In particular it
-has functions to perform find-replace on strings in many different ways and
-different ways to split strings particularly suited for programming syntax's (camel case, pascal case, and
-snake case).
++s_mach.string+ is an open-source Scala library that provides primitives for
+string manipulation beyond the standard library. s_mach.string supports
+word-level string manipulations using an arbitrary word definition (e.g.
+delimited by whitespace,  camel case, etc). s_mach.string also provides a
+variety of find-replace methods.
 
-Features
-~~~~~~~~
+== Include in SBT
+1. Add to +build.sbt+
++
+[source,sbt,numbered]
+----
+libraryDependencies += "net.s_mach" %% "string" % "1.0.0"
+----
+NOTE: +s_mach.string+ is currently only compiled for Scala 2.11 (though 2.10.4
+support can be added if there is interest)
 
-* Find-replace using a variety of input types.
+== Versioning
++s_mach.string+ uses semantic versioning (http://semver.org/). +s_mach.string+
+does not use the package private modifier. Instead, all code files outside of
+the "impl" folder form the public interface and are governed by the rules of
+semantic versioning. Code files inside the "impl" folder may be used by
+downstream applications and libraries. However, no guarantees are made as to the
+stability or interface of code in the "impl" folder.
 
-* String splitting based on different delimiting rules
-** Split a string based on whitespace, underscores_and whitespace, PascalCase, snakeCase.
-*** Splitting a string with the wrong splitter type may give strange results.
-** Split and preserve the "glue" between split words for reconstructing the original string's structure.
+== Features
 
-* String transformations such as:
-** +def toCamelCase(implicit words:WordSplitter)+
-** +def collapseWhitespace : String+
-** +def toDoubleOpt : Option[Double]+
+* Define semantics of words in strings by choosing which implicit WordSplitter
+to import
+** Import any of 3 provided WordSplitters:
+*** +import WordSplitter.Whitespace+
+*** +import WordSplitter.Underscore+
+*** +import WordSplitter.CamelCase+
+** Or supply your own using WordSplitter regex or provide a completely custom
+word splitting implementation
+** Split and preserve the "glue" between words for reconstructing the original
+string's structure
 
-+s_mach.string+ enhances basic Scala Strings by an implicit conversion. +
-Importing the +s_mach.string+ package object along with any
-desired +WordSplitter+ s makes available all of the library's functions.
+* Find-replace using a variety of input types
+** Search by regex, String, or Seq[String]
+** Replace by function (+Match => String+) or String literal
+** Match only words
+** Match case sensitive or insensitive
 
-Examples
-~~~~~~~~
+* Adds utility String methods:
+** +String.ensureSuffix+
+** +String.mapWords+
+** +String.collapseWhitespace+
+** +String.toProperCase+
+** +String.toTitleCase+
+** +String.toCamelCase+
+** +String.toPascalCase+
+** +String.toSnakeCase+
+** +String.toWords+
+** +String.toWordsWithGlue+
+** +String.indent+
+** +String.toOption+
+** +String.toDoubleOpt+
+** +String.toLongOpt+
+** +String.toIntOpt+
+** +String.convert+
+
+==Examples
 
 [source,scala]
 ----
+[info] Starting scala interpreter...
+[info] 
+Welcome to Scala version 2.11.1 (Java HotSpot(TM) 64-Bit Server VM, Java 1.7.0_72).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> import s_mach.string._
 import s_mach.string._
-import s_mach.string.WordSplitter._
 
-val sentence = "the_rain_in_spain_falls_on_the_plain"
-sentence.toTitleCase(WhitespaceOrUnderscore)
-//yields: The Rain In Spain Falls On The Plain
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
 
-sentence.findReplaceWords(Seq(("spain", "france"),("rain","snow")), false)(WhitespaceOrUnderscore)
-  .toWords(WhitespaceOrUnderscore)
-  .map(_.toTitleCase)
-  .mkString(" ")
-//yields: The Snow In France Falls On The Plain
+val sentence = "the_rain_in__spain falls  on the Plain"
 
-val cCode = "pthread_mutex_lock* my_lock;"
-cCode.toWords(Whitespace).map(_.toCamelCase(WhitespaceOrUnderscore)).mkString(" ")
-//yields: pthreadMutexLock* myLock;
+// Split on whitespace
+val example1 = {
+  import WordSplitter.Whitespace
+  sentence.toWords.toList
+}
 
-val pCode = "pthread_mutex_lock* my_lock = some_other_value + c_pointer_shenanigans;"
-dCode.toWords(Whitespace).map(_.toCamelCase(WhitespaceOrUnderscore)).mkString(" ")
-//yields: pthreadMutexLock* myLock = someOtherValue + cPointerShenanigans;
+// Split on underscore
+val example2 = {
+  import WordSplitter.Underscore
+  sentence.toWords.toList
+}
 
-pCode.toWords(Whitespace).map(_.toPascalCase).mkString(" ")
-//yields: PthreadMutexLock* MyLock = SomeOtherValue + CPointerShenanigans;
+// Split on whitespace or underscore
+val example3 = {
+  import WordSplitter.WhitespaceOrUnderscore
+  sentence.toWords.toList
+}
 
-//if you need to preserve the original spaces between words, you can.
-val spacing = "int a = (  b *   d );"
-val spacingEnhanced = Whitespace.splitWithGlue(spacing)
-  .map{ case (content, glue) => content.toTitleCase + glue }
-  .mkString
-//yields: Int A = (  B *   D );
+// Exiting paste mode, now interpreting.
 
-//but if you don't want the space...
-spacingEnhanced.collapseWhitespace.findReplace(Seq(("( ", "("), (" )", ")")), false)
-//yields: Int A = (B * D);
+sentence: String = the_rain_in__spain falls  on the Plain
+example1: List[String] = List(the_rain_in__spain, falls, on, the, Plain)
+example2: List[String] = List(the, rain, in, spain falls  on the Plain)
+example3: List[String] = List(the, rain, in, spain, falls, on, the, Plain)
+
+scala> :paste
+// Entering paste mode (ctrl-D to finish)
+
+val example4 = {
+  import WordSplitter.Whitespace
+  sentence.findReplaceWords(Seq(("spain", "france"),("plain","savanna")), caseSensitive = false)
+}
+val example5 = {
+  import WordSplitter.WhitespaceOrUnderscore
+  sentence.findReplaceWords(Seq(("spain", "france"),("plain","savanna")), caseSensitive = true)
+}
+
+// Exiting paste mode, now interpreting.
+
+example4: String = the_rain_in__spain falls  on the savanna
+example5: String = the_rain_in__france falls  on the Plain
+
+scala> :paste
+
+val example6 = {
+  sentence.findRegexReplaceMatch(Seq(("[a-z]*ain".r,{ m => m.toString + "!" })))
+}
+
+// Exiting paste mode, now interpreting.
+
+example6: String = the_rain!_in__spain! falls  on the Plain!
+
+scala>
 ----

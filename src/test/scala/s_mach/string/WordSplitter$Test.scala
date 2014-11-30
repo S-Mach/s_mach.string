@@ -20,15 +20,10 @@ package s_mach.string
 
 import org.scalatest.{Matchers, FlatSpec}
 import s_mach.string.WordSplitter._
-/**
- * Splitter tests
- *
- * @author Gustavo Hidalgo
- * @version 1.0
- */
+
 class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
 
-  "White space splitter" should "split a string by whitespace and newlines" in {
+  "RegexSplitter.split" should "split a string into words" in {
     Whitespace.split(sentence).toStream should contain allOf (
       "The",
       "rain",
@@ -42,159 +37,86 @@ class WordSplitter$Test extends FlatSpec with Matchers with TestStrings{
       "println(a)"
     )
     Whitespace.split(singleWord).toStream should contain only "hello!"
-    Whitespace.splitWithGlue(statements).toStream should contain allOf (
-      ("a[i]"," "),
-      ("="," "),
-      ("a[1];","\n"),
-      ("println(a)","")
-    )
   }
 
-  it should "return an iterator with an empty string if it can't split" in {
-    Whitespace.split("").toStream should contain ("")
+  it should "return the string if there are no words" in {
+    Underscore.split(sentence).toSeq should contain(sentence)
   }
 
-  it should "split a string and maintain its glue correctly" in {
-    Whitespace.splitWithGlue("aa ").toStream should contain (("aa", " "))
+  it should "return Iterator.empty if the string is empty" in {
+    Underscore.split("").toSeq should equal(Seq.empty)
   }
 
-  it should "split a string and maintain its glue correctly when glue occurs first" in {
-    Whitespace.splitWithGlue(" aa ").toStream should contain.inOrderOnly(("", " "), ("aa", " "))
+  "RegexSplitter.splitWithGlue" should "split a string words with glue" in {
+    Whitespace.splitWithGlue(sentence).map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("  1The2 3rain2 3in2  3spain.2  4")
   }
 
-  it should "pass this slightly harder test" in {
-    Whitespace.splitWithGlue(" aa a ").toStream should contain.inOrderOnly(("", " "), ("aa", " "), ("a", " "))
+  it should "return the entire string as a word if there is no glue" in {
+    Underscore.splitWithGlue(sentence).map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("  The rain in  spain.  2")
   }
 
-  it should "degenerate to regular splitting when splitting a string with no glue" in {
-    Whitespace.splitWithGlue(singleWord).toStream should contain only(("hello!", ""))
-  }
-
-  it should """return an iterator of ("","") on an empty string"""" in {
-    Whitespace.splitWithGlue("").toStream should contain only(("", ""))
-  }
-
-  "Whitespace or underscore splitter" should "split a string by whitespace, newlines, and underscores" in {
-    WhitespaceOrUnderscore.split(sentence).toStream should contain allOf (
-      "The",
-      "rain",
-      "in",
-      "spain."
-      )
-    WhitespaceOrUnderscore.split(statements).toStream should contain allOf (
-      "a[i]",
-      "=",
-      "a[1];",
-      "println(a)"
-      )
-    WhitespaceOrUnderscore.split(singleWord).toStream should contain only "hello!"
-    WhitespaceOrUnderscore.split(someUnderscores).toStream should contain allOf (
-      "test",
-      "variable",
-      "with",
-      "underscores"
-    )
-    WhitespaceOrUnderscore.split(moreUnderscores).toSeq should equal ( List(
-      "",
-      "test",
-      "variable",
-      "with",
-      "underscores",
-      "another",
-      "variable",
-      "for",
-      "testing"
-      )
-    )
-    WhitespaceOrUnderscore.splitWithGlue(moreUnderscores).toList should equal ( List(
-      ("","_"),
-      ("test","_"),
-      ("variable","_"),
-      ("with","_"),
-      ("underscores","\n"),
-      ("another"," "),
-      ("variable","_"),
-      ("for"," "),
-      ("testing","  ")
-      )
-    )
-  }
-
-  it should "return an iterator with an empty string if it can't split" in {
-    WhitespaceOrUnderscore.split("").toStream should contain ("")
-  }
-
-  it should "split a string and maintain its glue correctly" in {
-    WhitespaceOrUnderscore.splitWithGlue("aa ").toStream should contain (("aa", " "))
-  }
-
-  it should "split a string and maintain its glue correctly with mixed spaces and underscores" in {
-    WhitespaceOrUnderscore.splitWithGlue("_a_aa ").toStream should contain inOrderOnly(("","_"),("a","_"),("aa", " "))
-  }
-
-  it should "degenerate to regular splitting when splitting a string with no glue" in {
-    WhitespaceOrUnderscore.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
-  }
-
-  it should """return an iterator of ("","") on an empty string"""" in {
-    WhitespaceOrUnderscore.splitWithGlue("").toStream should contain (("", ""))
+  it should "return nothing if the string is empty" in {
+    Underscore.splitWithGlue("").map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("")
   }
 
 
-  "Camel case word splitter" should "separate a camelCased string into words" in {
-    CamelCase.split(simpleCamelCase).toStream should contain allOf (
+  "CaseWordSplitter.split" should "separate a camelCased string into words" in {
+    CamelCase.split(simpleCamelCase).toStream should contain allOf(
       "simple",
       "Camel",
       "Case"
     )
-    CamelCase.split(harderCamelCase).toStream should contain allOf (
-      "simple",
-      "Camel",
-      "Case",
-      "With",
-      "WORDSINCAPSNnot",
-      "Caught"
-    )
-    CamelCase.splitWithGlue(harderCamelCase).toStream should contain allOf (
-      ("simple",""),
-      ("Camel",""),
-      ("Case",""),
-      ("With",""),
-      ("WORDSINCAPSNnot",""),
-      ("Caught","")
-    )
   }
 
-  it should "return an iterator with an empty string if it can't split" in {
-    CamelCase.split("").toStream should contain ("")
+  it should "return the entire string as a word if there is no glue" in {
+    CamelCase.split(simpleCamelCase.toLowerCase).toStream should equal(Stream(
+      "simplecamelcase"
+    ))
   }
 
-  it should "degenerate to regular splitting when splitting a string with no glue" in {
-    CamelCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  it should "return Iterator.empty if the string is empty" in {
+    CamelCase.split("").toStream should equal(Stream.empty)
   }
 
-  it should """return an iterator of ("","") on an empty string"""" in {
-    CamelCase.splitWithGlue("").toStream should contain (("", ""))
+  "CaseWordSplitter.splitWithGlue" should "separate a camelCased string into words" in {
+    CamelCase.splitWithGlue(simpleCamelCase).map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("simple2Camel2Case2")
   }
 
-  "Pascal case word splitter" should "separate PascalCase strings into words" in {
-    PascalCase.split(pascalCase).toStream should contain allOf (
-      "Pascal",
-      "Case"
-    )
-
-    PascalCase.split(simpleCamelCase).toStream should contain allOf (
-      "Camel",
-      "Case"
-      )
+  it should "return the entire string as a word if there is no glue" in {
+    CamelCase.splitWithGlue(simpleCamelCase.toLowerCase).map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("simplecamelcase2")
   }
 
-  it should "degenerate to regular splitting when splitting a string with no glue" in {
-    PascalCase.splitWithGlue(singleWord).toStream should contain (("hello!", ""))
+  it should "return Iterator.empty if the string is empty" in {
+    CamelCase.splitWithGlue("").map(
+      leadingGlue = { lg:String => lg + '1' },
+      word = { w:String => w + '2' },
+      glue = { g:String => g + '3' },
+      trailingGlue = { tg:String => tg + '4' }
+    ) should equal("")
   }
-
-  it should """return an iterator of ("","") on an empty string"""" in {
-    PascalCase.splitWithGlue("").toStream should contain (("", ""))
-  }
-
 }
