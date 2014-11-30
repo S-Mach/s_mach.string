@@ -67,7 +67,7 @@ string's structure
 ** +String.toIntOpt+
 ** +String.convert+
 
-==Examples
+== Examples
 
 [source,scala]
 ----
