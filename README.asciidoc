@@ -113,10 +113,13 @@ example3: List[String] = List(the, rain, in, spain, falls, on, the, Plain)
 scala> :paste
 // Entering paste mode (ctrl-D to finish)
 
+// find replace on words (delimited by whitespace)
 val example4 = {
   import WordSplitter.Whitespace
   sentence.findReplaceWords(Seq(("spain", "france"),("plain","savanna")), caseSensitive = false)
 }
+
+// find replace on words (delimited by whitespace or underscore)
 val example5 = {
   import WordSplitter.WhitespaceOrUnderscore
   sentence.findReplaceWords(Seq(("spain", "france"),("plain","savanna")), caseSensitive = true)
@@ -129,6 +132,7 @@ example5: String = the_rain_in__france falls  on the Plain
 
 scala> :paste
 
+// find matching regex and append '!' to each match
 val example6 = {
   sentence.findRegexReplaceMatch(Seq(("[a-z]*ain".r,{ m => m.toString + "!" })))
 }
