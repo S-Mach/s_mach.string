@@ -21,7 +21,7 @@ variety of find-replace methods.
 +
 [source,sbt,numbered]
 ----
-libraryDependencies += "net.s_mach" %% "string" % "1.0.0"
+libraryDependencies += "net.s_mach" %% "string" % "1.0.1"
 ----
 NOTE: +s_mach.string+ is currently only compiled for Scala 2.11 (though 2.10.4
 support can be added if there is interest)
