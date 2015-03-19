@@ -9,7 +9,7 @@ notifications:
     - lance.gatlin@s-mach.net
     - zambrano.hidalgo@gmail.com
 script:
-- sbt scoverage:test -J-Xmx3g
+- sbt coverage test coverageReport -J-Xmx3g
 - sbt coveralls -J-Xmx3g
 env:
   global:
