@@ -1,4 +1,4 @@
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.6"
 
 organization := "net.s_mach"
 
