@@ -9,10 +9,11 @@ notifications:
     - lance.gatlin@s-mach.net
     - zambrano.hidalgo@gmail.com
 script:
-- sbt coverage test coverageReport -J-Xmx3g
+ - sbt coverage test coverageReport -J-Xmx3g
 after_success:
-- sbt coveralls -J-Xmx3g
-  - >
+ - sbt coveralls
+ - sbt codacyCoverage
+ - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
       test "${TRAVIS_BRANCH}" == 'master' &&
       test "${TRAVIS_JDK_VERSION}" = 'openjdk6' &&
