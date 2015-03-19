@@ -11,7 +11,6 @@ notifications:
 script:
 - sbt coverage test coverageReport -J-Xmx3g
 after_success:
-- sbt codacyCoverage -J-Xmx3g
 - sbt coveralls -J-Xmx3g
   - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
