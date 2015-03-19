@@ -21,6 +21,7 @@ package s_mach.string.impl
 import scala.language.implicitConversions
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.util.control.NonFatal
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 import s_mach.string.WordSplitter
@@ -227,7 +228,7 @@ object StringOps {
       Some(f(s))
     }
     catch {
-      case e : Exception  => None
+      case NonFatal(_)  => None
     }
   }
 
