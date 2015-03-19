@@ -1,4 +1,7 @@
-resolvers += Classpaths.sbtPluginReleases
+resolvers ++= Seq(
+  Classpaths.sbtPluginReleases,
+  "Typesafe Releases" at "https://repo.typesafe.com/typesafe/releases/"
+)
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.0.4")
 
