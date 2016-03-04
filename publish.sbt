@@ -11,7 +11,7 @@ publishTo := {
 }
 
 pomExtra := (
-  <url>https://github.com/S-Mach/s_mach.string</url>
+  <url>https://github.com/S-Mach/s_mach.{name.value}</url>
     <licenses>
       <license>
         <name>MIT</name>
@@ -20,9 +20,9 @@ pomExtra := (
       </license>
     </licenses>
     <scm>
-      <url>git@github.com:S-Mach/s_mach.string.git</url>
-      <connection>scm:git:git@github.com:S-Mach/s_mach.string.git</connection>
-      <developerConnection>scm:git:git@github.com:S-Mach/s_mach.string.git</developerConnection>
+      <url>git@github.com:S-Mach/s_mach.{name.value}.git</url>
+      <connection>scm:git:git@github.com:S-Mach/s_mach.{name.value}.git</connection>
+      <developerConnection>scm:git:git@github.com:S-Mach/s_mach.{name.value}.git</developerConnection>
     </scm>
     <developers>
       <developer>
