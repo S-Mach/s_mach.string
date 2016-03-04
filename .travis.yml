@@ -7,7 +7,6 @@ notifications:
   email:
     recipients:
     - lance.gatlin@s-mach.net
-    - zambrano.hidalgo@gmail.com
 script:
  - sbt coverage test coverageReport -J-Xmx3g
 after_success:
