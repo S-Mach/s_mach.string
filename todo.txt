@@ -1,0 +1,4 @@
+* Travis issues
+* Add tests for CharGroup
+* Groom copyrights
+* Release 1.1.0
