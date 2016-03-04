@@ -1,6 +1,9 @@
 language: scala
 scala:
 - 2.11.7
+# This is a workaround for this issue: https://goo.gl/FexVa7
+addons:
+  hostname: short-hostname
 jdk:
 - openjdk6
 notifications:
