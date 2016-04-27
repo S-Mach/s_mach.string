@@ -21,32 +21,8 @@ package s_mach.string.impl
 import scala.annotation.tailrec
 import scala.util.matching.Regex
 import s_mach.string._
-import s_mach.string.CharGroup._
 
 object CharGroupOps {
-   def explainCharGroup(cg: CharGroup) : String = {
-     cg match {
-       case UnicodeLetter => "unicode letters"
-       case UppercaseLetter => "uppercase letters"
-       case LowercaseLetter => "lowercase letters"
-       case Letter => "letters"
-       case WordLetter => "word letters"
-       case Digit => "digits"
-       case Underscore => "underscores"
-       case Hyphen => "hyphens"
-       case Space => "spaces"
-       case Whitespace => "whitespace"
-     }
-   }
-
-   def explainCharGroups(groups: Seq[CharGroup]) : String = {
-    val printGroups = groups.map(explainCharGroup)
-
-    val csmiddle = printGroups.init.mkString(", ")
-    val last = if(printGroups.size > 1) s" or ${printGroups.last}" else printGroups.last
-    s"must contain only $csmiddle$last"
-  }
-
   def mkCharGroupRegex(groups: CharGroup*) : Regex =
     new Regex(s"[${groups.map(_.pattern).mkString}]")
 

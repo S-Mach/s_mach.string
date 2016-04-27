@@ -25,7 +25,7 @@ import scala.util.matching.Regex
 /**
  * A character group used in a regex to specify either a range of
  * characters, a single character or a character class. CharGroups
- * are used to create and extract standard simple regex validators to
+ * are used to create and extract standard simple regexes to
  * support building human readable explanations.
  */
 sealed trait CharGroup {
@@ -80,9 +80,6 @@ object CharGroup {
     LowercaseLetter,
     UnicodeLetter
   )
-
-  def explain(groups: Seq[CharGroup]) : String =
-    CharGroupOps.explainCharGroups(groups)
 }
 
 /**
@@ -95,9 +92,6 @@ object CharGroupRegex {
 
   def unapplySeq(s: String) : Option[Seq[CharGroup]] =
     CharGroupOps.unapplyCharGroupRegex(s)
-
-  def maybeExplain(regex: String) : Option[String] =
-    unapplySeq(regex).map(CharGroup.explain)
 }
 
 /**
@@ -112,8 +106,5 @@ object CharGroupPattern {
 
   def unapplySeq(pattern: String) : Option[Seq[CharGroup]] =
     CharGroupOps.unapplyCharGroupPattern(pattern)
-
-  def maybeExplain(pattern: String) : Option[String] =
-    unapplySeq(pattern).map(CharGroup.explain)
 }
 
