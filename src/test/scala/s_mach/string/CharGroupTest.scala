@@ -66,36 +66,4 @@ class CharGroupTest extends FlatSpec with Matchers {
     }
   }
 
-  "CharGroup.explain" should "return a string that explains the char groups present" in {
-    def explainCharGroup(cg: CharGroup) : String = {
-      cg match {
-        case UnicodeLetter => "unicode letters"
-        case UppercaseLetter => "uppercase letters"
-        case LowercaseLetter => "lowercase letters"
-        case Letter => "letters"
-        case WordLetter => "word letters"
-        case Digit => "digits"
-        case Underscore => "underscores"
-        case Hyphen => "hyphens"
-        case Space => "spaces"
-        case Whitespace => "whitespace"
-      }
-    }
-
-    CharGroup.explain(Seq(Space)) should be(
-      s"must contain only spaces"
-    )
-
-    CharGroup.explain(Seq(Letter, Space)) should be(
-      s"must contain only letters or spaces"
-    )
-
-    CharGroup.all.combinations(3).foreach { gs =>
-      val es = gs.map(explainCharGroup)
-      CharGroup.explain(gs) should be(
-        s"must contain only ${es(0)}, ${es(1)} or ${es(2)}"
-      )
-    }
-
-  }
 }
