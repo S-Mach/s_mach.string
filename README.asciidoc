@@ -73,7 +73,8 @@ string's structure (see WordSplitResult)
 ** +String.toIntOpt+
 ** +String.convert+
 
-* Work char group regex patterns using CharGroup, CharGroupPattern & CharGroupRegex
+* Extract and create char group regex patterns using CharGroup, CharGroupPattern & CharGroupRegex
+
 == Examples
 
 ----
