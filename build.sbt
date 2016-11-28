@@ -1,3 +1,14 @@
-name := "string"
+import Common._
+import Publish._
 
-libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
+lazy val root =
+  project.in(file("."))
+    .settings({
+      Seq(
+        name := "string",
+        libraryDependencies ++= Seq(
+          "org.scalatest" %% "scalatest" % "2.2.0" % "test"
+        ),
+        crossScalaVersions := Seq("2.11.8","2.12.0")
+      ) ++ commonSettings ++ publishSettings
+    }:_*)

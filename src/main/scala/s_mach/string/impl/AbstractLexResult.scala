@@ -18,38 +18,38 @@
 */
 package s_mach.string.impl
 
-import s_mach.string.WordSplitResult
+import s_mach.string.LexResult
 
-trait AbstractWordSplitResult extends WordSplitResult {
+trait AbstractLexResult extends LexResult {
   override def map(
-    leadingGlue: String => String,
-    word: String => String,
-    glue: String => String,
-    trailingGlue: String => String
+    leadingDelim: String => String,
+    token: String => String,
+    delimiter: String => String,
+    trailingDelim: String => String
   ) : String = {
     val sb = new StringBuilder
     // Note: required for casting to String => Unit since sb.append returns StringBuilder
-    val f1 : String => Unit = { s:String => sb.append(leadingGlue(s)) }
-    val f2 : String => Unit = { s:String => sb.append(word(s)) }
-    val f3 : String => Unit = { s:String => sb.append(glue(s)) }
-    val f4 : String => Unit = { s:String => sb.append(trailingGlue(s)) }
+    val f1 : String => Unit = { s:String => sb.append(leadingDelim(s)) }
+    val f2 : String => Unit = { s:String => sb.append(token(s)) }
+    val f3 : String => Unit = { s:String => sb.append(delimiter(s)) }
+    val f4 : String => Unit = { s:String => sb.append(trailingDelim(s)) }
     foreach(
-      leadingGlue = f1,
-      word = f2,
-      glue = f3,
-      trailingGlue = f4
+      leadingDelim = f1,
+      token = f2,
+      delim = f3,
+      trailingDelim = f4
     )
     sb.result()
   }
 
   override def toString = {
     val sb = new StringBuilder
-    sb.append("WordSplitResult(")
+    sb.append("LexResult(")
     foreach(
-      leadingGlue = { s:String => sb.append(s"LeadingGlue($s),") },
-      word = { s:String => sb.append(s"Word($s),") },
-      glue = { s:String => sb.append(s"Glue($s),") },
-      trailingGlue = { s:String => sb.append(s"TrailingGlue($s),") }
+      leadingDelim = { s:String => sb.append(s"LeadingDelim($s),") },
+      token = { s:String => sb.append(s"Token($s),") },
+      delim = { s:String => sb.append(s"Delim($s),") },
+      trailingDelim = { s:String => sb.append(s"TrailingDelim($s),") }
     )
     sb.dropRight(1).append(")").result()
   }

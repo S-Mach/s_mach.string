@@ -24,7 +24,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.control.NonFatal
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import s_mach.string.WordSplitter
+import s_mach.string.Lexer
 
 object StringOps {
 
@@ -89,27 +89,27 @@ object StringOps {
     })
     }
 
-  def findReplaceWords(
+  def findReplaceTokens(
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(String, String)]
-  )(implicit splitter:WordSplitter) : String = {
+  )(implicit lexer:Lexer) : String = {
     val caseFunction : (String, String) => Boolean =
       if(caseSensitive) {
         { (a,b) => a == b }
       } else {
         { (a,b) => a.equalsIgnoreCase(b) }
       }
-    splitter.splitWithGlue(s).map(
-      leadingGlue = { lg:String => lg },
-      word = { w:String =>
+    lexer.lex(s).map(
+      leadingDelim = { lg:String => lg },
+      token = { w:String =>
         fr.find(t => caseFunction(t._1, w)) match {
           case Some((_, replacement)) => replacement
           case None => w
         }
       },
-      glue = { g:String => g },
-      trailingGlue = { tg:String => tg }
+      delim = { g:String => g },
+      trailingDelim = { tg:String => tg }
     )
   }
 
@@ -125,44 +125,44 @@ object StringOps {
     })
   }
 
-  def findAllReplaceWords(
+  def findAllReplaceTokens(
     s: String,
     caseSensitive: Boolean,
     fr: Seq[(Seq[String], String)]
-  )(implicit splitter:WordSplitter) : String = {
+  )(implicit lexer:Lexer) : String = {
     val caseFunction : (String, String) => Boolean =
       if(caseSensitive) {
         { (a,b) => a == b }
       } else {
         { (a,b) => a.equalsIgnoreCase(b) }
       }
-    splitter.splitWithGlue(s).map(
-      leadingGlue = { lg:String => lg },
-      word = { w:String =>
+    lexer.lex(s).map(
+      leadingDelim = { lg:String => lg },
+      token = { w:String =>
         fr.find(t => t._1.exists(caseFunction(_, w))) match {
           case Some((_, replacement)) => replacement
           case None => w
         }
       },
-      glue = { g:String => g },
-      trailingGlue = { tg:String => tg }
+      delim = { g:String => g },
+      trailingDelim = { tg:String => tg }
     )
   }
 
-  def collapseGlue(
+  def collapseDelims(
     s: String,
-    glueSubst: String
-  )(implicit splitter:WordSplitter) : String = {
-    splitter.splitWithGlue(s).map(
-      leadingGlue = { lg:String => "" },
-      word = { w:String => w },
-      glue = { g:String => glueSubst },
-      trailingGlue = { tg:String => "" }
+    delimiterSubst: String
+  )(implicit lexer:Lexer) : String = {
+    lexer.lex(s).map(
+      leadingDelim = { lg:String => "" },
+      token = { w:String => w },
+      delim = { g:String => delimiterSubst },
+      trailingDelim = { tg:String => "" }
     )
   }
 
   def collapseWhitespace(s: String) : String =
-    collapseGlue(s," ")(WordSplitter.Whitespace)
+    collapseDelims(s," ")(Lexer.Whitespace)
 
   def toProperCase(s: String) : String = {
     s.length match {
@@ -172,36 +172,36 @@ object StringOps {
     }
   }
 
-  def mapWords(s: String)(f: String => String)(implicit splitter:WordSplitter) : String = {
-    splitter.splitWithGlue(s).map(
-      leadingGlue = { lg:String => lg },
-      word = { w:String => f(w) },
-      glue = { g:String => g },
-      trailingGlue = { tg:String => tg }
+  def mapTokens(s: String)(f: String => String)(implicit lexer:Lexer) : String = {
+    lexer.lex(s).map(
+      leadingDelim = { lg:String => lg },
+      token = { w:String => f(w) },
+      delim = { g:String => g },
+      trailingDelim = { tg:String => tg }
     )
   }
 
-  def toTitleCase(s: String)(implicit splitter:WordSplitter) : String = {
-    mapWords(s)(toProperCase)
+  def toTitleCase(s: String)(implicit lexer:Lexer) : String = {
+    mapTokens(s)(toProperCase)
   }
 
 
-  def toCamelCase(s: String)(implicit splitter:WordSplitter) : String = {
+  def toCamelCase(s: String)(implicit lexer:Lexer) : String = {
     val sb = new StringBuilder(s.length)
-    val words = splitter.split(s)
-    if(words.nonEmpty) {
-      sb.append(words.next().toLowerCase)
-      words.foreach(word => sb.append(toProperCase(word)))
+    val tokens = lexer.tokens(s)
+    if(tokens.nonEmpty) {
+      sb.append(tokens.next().toLowerCase)
+      tokens.foreach(token => sb.append(toProperCase(token)))
     }
     sb.result()
   }
 
-  def toPascalCase(s: String)(implicit splitter:WordSplitter) : String = {
-    splitter.split(s).map(toProperCase).mkString
+  def toPascalCase(s: String)(implicit lexer:Lexer) : String = {
+    lexer.tokens(s).map(toProperCase).mkString
   }
 
-  def toSnakeCase(s: String)(implicit  splitter:WordSplitter) : String = {
-    splitter.split(s).map(_.toLowerCase).mkString("_")
+  def toSnakeCase(s: String)(implicit  lexer:Lexer) : String = {
+    lexer.tokens(s).map(_.toLowerCase).mkString("_")
   }
 
   def indent(s: String, n: Int, spacer: String = " ") : String = {

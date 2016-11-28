@@ -18,32 +18,31 @@
 */
 package s_mach.string.impl
 
-import s_mach.string.WordSplitter
-
+import s_mach.string.Lexer
 import scala.util.matching.Regex
 
-class RegexCharTransitionWordSplitterImpl(oomBeforeAfter: Seq[(Regex,Regex)]) extends WordSplitter {
+class RegexCharTransitionLexerImpl(oomBeforeAfter: Seq[(Regex,Regex)]) extends Lexer {
 
   val regex =
     oomBeforeAfter.map { case (before, after) =>
       s"(?<=${before.regex})(?=${after.regex})"
     }.mkString("|").r
 
-  override def split(s: String): Iterator[String] = {
+  override def tokens(s: String): Iterator[String] = {
     regex.split(s) match {
       case Array("") => Iterator.empty
       case a => a.iterator
     }
   }
 
-  override def splitWithGlue(s: String) = new AbstractWordSplitResult {
+  override def lex(s: String) = new AbstractLexResult {
     override def foreach(
-      leadingGlue: String => Unit, 
-      word: String => Unit, 
-      glue: String => Unit, 
-      trailingGlue: String => Unit
+      leadingDelim: String => Unit,
+      token: String => Unit,
+      delimiter: String => Unit,
+      trailingDelim: String => Unit
     ): Unit = {
-      split(s).foreach(word)
+      tokens(s).foreach(token)
     }
   }
 }

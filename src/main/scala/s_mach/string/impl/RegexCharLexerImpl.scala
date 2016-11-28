@@ -18,44 +18,43 @@
 */
 package s_mach.string.impl
 
-import s_mach.string.WordSplitter
-
+import s_mach.string.Lexer
 import scala.util.matching.Regex
 
-class RegexCharWordSplitterImpl(
-  singleCharWordRegex: Regex,
-  singleCharGlueRegex: Regex
-) extends WordSplitter {
-  val splitRegex = s"${singleCharGlueRegex.regex}+".r
+class RegexCharLexerImpl(
+  singleCharTokenRegex: Regex,
+  singleCharDelimRegex: Regex
+) extends Lexer {
+  val separateRegex = s"${singleCharDelimRegex.regex}+".r
 
-  override def split(s: String): Iterator[String] = {
-    // Note: split always returns a non empty iterator
+  override def tokens(s: String): Iterator[String] = {
+    // Note: separate always returns a non empty iterator
     // for "" it returns Array("")
-    // for strings with no glue it returns Array(string)
-    // for strings with leading glue, it returns Array("", word, glue, ...)
-    splitRegex.split(s) match {
+    // for strings with no delimiter it returns Array(string)
+    // for strings with leading delimiter, it returns Array("", token, delimiter, ...)
+    separateRegex.split(s) match {
       case Array("",a@_*) => a.iterator
       case a => a.iterator
     }
   }
 
-  val wordBoundaryRegex = s"(?<=${singleCharWordRegex.regex})(?=${singleCharGlueRegex.regex})|(?<=${singleCharGlueRegex.regex})(?=${singleCharWordRegex.regex})".r
+  val tokenBoundaryRegex = s"(?<=${singleCharTokenRegex.regex})(?=${singleCharDelimRegex.regex})|(?<=${singleCharDelimRegex.regex})(?=${singleCharTokenRegex.regex})".r
 
-  override def splitWithGlue(s: String) = new AbstractWordSplitResult {
+  override def lex(s: String) = new AbstractLexResult {
     def foreach(
-      leadingGlue: String => Unit,
-      word: String => Unit,
-      glue: String => Unit,
-      trailingGlue: String => Unit
+      leadingDelim: String => Unit,
+      token: String => Unit,
+      delimiter: String => Unit,
+      trailingDelim: String => Unit
     ) : Unit = {
       def process2(result: Iterator[String], w: String) = {
-        word(w)
+        token(w)
         if(result.hasNext) {
           val g = result.next()
           if(result.hasNext) {
-            glue(g)
+            delimiter(g)
           } else {
-            trailingGlue(g)
+            trailingDelim(g)
           }
         }
       }
@@ -68,10 +67,10 @@ class RegexCharWordSplitterImpl(
       }
 
       if(s.nonEmpty) {
-        val result = wordBoundaryRegex.split(s).iterator
+        val result = tokenBoundaryRegex.split(s).iterator
         val head = result.next()
-        if(splitRegex.pattern.matcher(head).matches) {
-          leadingGlue(head)
+        if(separateRegex.pattern.matcher(head).matches) {
+          leadingDelim(head)
           process(result)
         } else {
           process2(result, head)

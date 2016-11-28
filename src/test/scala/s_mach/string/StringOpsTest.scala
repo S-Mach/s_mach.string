@@ -19,7 +19,7 @@
 package s_mach.string
 
 import org.scalatest.{Matchers, FlatSpec}
-import s_mach.string.WordSplitter.{PascalCase, CamelCase, WhitespaceOrUnderscore, Whitespace}
+import s_mach.string.Lexer.{PascalCase, CamelCase, WhitespaceOrUnderscore, Whitespace}
 
 /**
  * Test suite for StringOps
@@ -27,7 +27,7 @@ import s_mach.string.WordSplitter.{PascalCase, CamelCase, WhitespaceOrUnderscore
  * @author Gustavo Hidalgo
  * @version 1.0
  */
-class StringOps$Test extends FlatSpec with Matchers with TestStrings{
+class StringOpsTest extends FlatSpec with Matchers with TestStrings{
 
 
   "indent()" should "add an indentation format" in {
@@ -96,11 +96,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     intString.ensureSuffix(hello) should equal(intString + hello)
   }
 
-  "mapWords" should "map only words in a string" in {
-    sentence.mapWords(s => s + '!')(Whitespace) should equal("  The! rain! in!  spain.!  ")
+  "mapTokens" should "map only tokens in a string" in {
+    sentence.mapTokens(s => s + '!')(Whitespace) should equal("  The! rain! in!  spain.!  ")
   }
 
-  "toProperCase()" should "capitalize the first word of a string" in {
+  "toProperCase()" should "capitalize the first token of a string" in {
     singleWord.toProperCase should equal(hello)
   }
 
@@ -116,11 +116,11 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "".toProperCase should equal("")
   }
 
-  "toTitleCase()" should "make words title cased" in {
+  "toTitleCase()" should "make tokens title cased" in {
     sentence.toTitleCase(Whitespace) should equal("  The Rain In  Spain.  ")
   }
 
-  it should "only modify the first letter of words" in {
+  it should "only modify the first letter of tokens" in {
     simpleCamelCase.toTitleCase(Whitespace) should equal("Simplecamelcase")
   }
 
@@ -128,7 +128,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "".toTitleCase(Whitespace) should equal("")
   }
 
-  it should "work with different splitters" in {
+  it should "work with different lexers" in {
     someUnderscores.toTitleCase(WhitespaceOrUnderscore) should equal("Test_Variable_With_Underscores")
     sentence.toTitleCase(WhitespaceOrUnderscore) should equal("  The Rain In  Spain.  ")
     sentence.toTitleCase(Whitespace) should equal("  The Rain In  Spain.  ")
@@ -140,7 +140,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.toCamelCase(Whitespace) should equal("theRainInSpain.")
   }
 
-  it should "adopt the behavior of the splitter" in {
+  it should "adopt the behavior of the lexer" in {
     simpleCamelCase.toCamelCase(Whitespace) should equal(simpleCamelCase.toLowerCase)
     simpleCamelCase.toCamelCase(CamelCase) should equal(simpleCamelCase)
     someUnderscores.toCamelCase(WhitespaceOrUnderscore) should equal("testVariableWithUnderscores")
@@ -157,7 +157,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     sentence.toSnakeCase(Whitespace) should equal ("the_rain_in_spain.")
   }
 
-  it should "adopt the behavior of the splitter" in {
+  it should "adopt the behavior of the lexer" in {
     simpleCamelCase.toSnakeCase(Whitespace) should equal(simpleCamelCase.toLowerCase)
     simpleCamelCase.toSnakeCase(CamelCase) should equal("simple_camel_case")
     pascalCase.toSnakeCase(PascalCase) should equal("pascal_case")
@@ -172,8 +172,8 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "   space and    more space!   ".collapseWhitespace should equal("space and more space!")
   }
 
-  "collapseGlue()" should "remove all extraneous glue" in {
-    "_   space and  _  more space!  _ ".collapseGlue("_")(WhitespaceOrUnderscore) should equal("space_and_more_space!")
+  "collapseDelims()" should "remove all extraneous delimiter" in {
+    "_   space and  _  more space!  _ ".collapseDelims("_")(WhitespaceOrUnderscore) should equal("space_and_more_space!")
   }
 
   "findRegexReplaceMatch()" should "replace all Matches from a sequence of regexes to a paired string" in {
@@ -196,7 +196,7 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "var a : Int = String.mkString".findRegexReplaceMatch(matches) should equal("var a : String = String mkString")
   }
 
-  it should "not perform any replacements if no words match the sequence of replacement" in {
+  it should "not perform any replacements if no tokens match the sequence of replacement" in {
     val matches = Seq(("bar".r,fooMatchFunction),("foo".r,fooMatchFunction))
     sentence.findRegexReplaceMatch(matches) should equal (sentence)
   }
@@ -246,37 +246,37 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     "var a : Int = String.mkString".findReplace(matches) should equal("var a : String = String mkString")
   }
 
-  "findReplaceWords()" should "preserve the glue between words" in {
-    sentence.findReplaceWords(
+  "findReplaceTokens()" should "preserve the delimiter between tokens" in {
+    sentence.findReplaceTokens(
       caseSensitive = true,
       zomFindReplace = replacementSequence
     )(Whitespace) should equal("  The Rain in  Espana.  ")
   }
 
   it should "ignore case when ordered to" in {
-    sentence.findReplaceWords(
+    sentence.findReplaceTokens(
       caseSensitive = false,
-      zomFindReplace =replacementSequence.map{ case (word, b) =>
-        (word.toUpperCase, b)
+      zomFindReplace =replacementSequence.map{ case (token, b) =>
+        (token.toUpperCase, b)
       }
     )(Whitespace) should equal("  The Rain in  Espana.  ")
   }
 
   it should "not perform recursive replacements" in {
-    "bar foo".findReplaceWords(
+    "bar foo".findReplaceTokens(
       caseSensitive = false,
       zomFindReplace =fooMatchSequence
     )(Whitespace) should equal("foo bla")
   }
 
   it should "ignore empty strings" in {
-    "".findReplaceWords(
+    "".findReplaceTokens(
       caseSensitive = true,
       zomFindReplace =replacementSequence
     )(Whitespace) should equal("")
   }
 
-  "findAllReplace()" should "preserve the glue between words" in {
+  "findAllReplace()" should "preserve the delimiter between tokens" in {
     sentence.findAllReplace(
       Seq((Seq("rain"), "Rain")),
       caseSensitive = false
@@ -304,47 +304,47 @@ class StringOps$Test extends FlatSpec with Matchers with TestStrings{
     ) should equal("foo bla")
   }
 
-  "findAllReplaceWords()" should "preserve the glue between words" in {
-    sentence.findAllReplaceWords(
+  "findAllReplaceTokens()" should "preserve the delimiter between tokens" in {
+    sentence.findAllReplaceTokens(
       Seq((Seq("RAIN"), "Rain")),
       caseSensitive = false
     )(Whitespace) should equal("  The Rain in  spain.  ")
   }
 
   it should "honor case when asked to" in {
-    sentence.findAllReplaceWords(
+    sentence.findAllReplaceTokens(
       Seq((Seq("rain", "The"), "Rain")),
       caseSensitive = true
     )(Whitespace) should equal ("  Rain Rain in  spain.  ")
   }
 
   it should "ignore the empty string" in {
-    "".findAllReplaceWords(
+    "".findAllReplaceTokens(
       Seq((Seq("rain", "The"), "Rain")),
       caseSensitive = true
     )(Whitespace) should equal ("")
   }
 
   it should "not perform recursive replacements" in {
-    "bar foo".findAllReplaceWords(
+    "bar foo".findAllReplaceTokens(
       caseSensitive = false,
       zomFindReplace = Seq((Seq("bar"), "foo"), (Seq("foo"), "bla"))
     )(Whitespace) should equal("foo bla")
   }
 
-  "toWords()" should "split a string based on a particular splitter" in {
-    sentence.toWords(WhitespaceOrUnderscore).toStream should contain allOf("The", "rain", "in", "spain.")
-    sentence.toWords(Whitespace).toStream should contain allOf("The", "rain", "in", "spain.")
+  "toTokens()" should "separate a string based on a particular lexer" in {
+    sentence.toTokens(WhitespaceOrUnderscore).toStream should contain allOf("The", "rain", "in", "spain.")
+    sentence.toTokens(Whitespace).toStream should contain allOf("The", "rain", "in", "spain.")
   }
 
-  "toWordsWithGlue()" should "split a string based on a particular splitter preserving glue" in {
-    sentence.toWordsWithGlue(Whitespace).map(
-      leadingGlue = { lg:String => lg + '1' },
-      word = { w:String => w + '2' },
-      glue = { g:String => g + '3' },
-      trailingGlue = { tg:String => tg + '4' }
+  "lex" should "separate a string based on a particular lexer preserving delimiter" in {
+    sentence.lex(Whitespace).map(
+      leadingDelim = { lg:String => lg + '1' },
+      token = { w:String => w + '2' },
+      delim = { g:String => g + '3' },
+      trailingDelim = { tg:String => tg + '4' }
     ) should equal("  1The2 3rain2 3in2  3spain.2  4")
-    sentence.toWordsWithGlue(Whitespace).toString should equal("WordSplitResult(LeadingGlue(  ),Word(The),Glue( ),Word(rain),Glue( ),Word(in),Glue(  ),Word(spain.),TrailingGlue(  ))")
+    sentence.lex(Whitespace).toString should equal("LexResult(LeadingDelim(  ),Token(The),Delim( ),Token(rain),Delim( ),Token(in),Delim(  ),Token(spain.),TrailingDelim(  ))")
   }
 
   "convert()" should "convert a string based on some convertion function" in {
