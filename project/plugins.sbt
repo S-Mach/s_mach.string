@@ -1,1 +1,1 @@
-addSbtPlugin("net.s_mach" %% "sbt_libdefaults" % "1.0.0")
+addSbtPlugin("net.s_mach" %% "sbt_libdefaults" % "1.0.1")
