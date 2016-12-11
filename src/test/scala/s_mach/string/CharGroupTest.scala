@@ -19,7 +19,6 @@
 package s_mach.string
 
 import org.scalatest.{FlatSpec, Matchers}
-import CharGroup._
 
 class CharGroupTest extends FlatSpec with Matchers {
   "CharGroupRegex.apply(CharGroups*)" should "return a regex built from the supplied char groups" in {

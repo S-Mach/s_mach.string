@@ -1,6 +1,7 @@
 language: scala
 scala:
-- 2.11.7
+- 2.11.8
+- 2.12.1
 # This is a workaround for this issue: https://goo.gl/FexVa7
 addons:
   hostname: short-hostname
@@ -11,7 +12,7 @@ notifications:
     recipients:
     - lance.gatlin@s-mach.net
 script:
- - sbt coverage test coverageReport -J-Xmx3g
+ - sbt coverage test coverageReport -J-Xmx4g
 after_success:
  - sbt coveralls
  - sbt codacyCoverage

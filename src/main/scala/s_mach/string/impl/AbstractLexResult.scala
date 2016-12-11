@@ -29,10 +29,10 @@ trait AbstractLexResult extends LexResult {
   ) : String = {
     val sb = new StringBuilder
     // Note: required for casting to String => Unit since sb.append returns StringBuilder
-    val f1 : String => Unit = { s:String => sb.append(leadingDelim(s)) }
-    val f2 : String => Unit = { s:String => sb.append(token(s)) }
-    val f3 : String => Unit = { s:String => sb.append(delimiter(s)) }
-    val f4 : String => Unit = { s:String => sb.append(trailingDelim(s)) }
+    val f1 : String => Unit = { s:String => sb.append(leadingDelim(s)); () }
+    val f2 : String => Unit = { s:String => sb.append(token(s)); () }
+    val f3 : String => Unit = { s:String => sb.append(delimiter(s)); () }
+    val f4 : String => Unit = { s:String => sb.append(trailingDelim(s)); () }
     foreach(
       leadingDelim = f1,
       token = f2,
@@ -46,10 +46,10 @@ trait AbstractLexResult extends LexResult {
     val sb = new StringBuilder
     sb.append("LexResult(")
     foreach(
-      leadingDelim = { s:String => sb.append(s"LeadingDelim($s),") },
-      token = { s:String => sb.append(s"Token($s),") },
-      delim = { s:String => sb.append(s"Delim($s),") },
-      trailingDelim = { s:String => sb.append(s"TrailingDelim($s),") }
+      leadingDelim = { s:String => sb.append(s"LeadingDelim($s),"); () },
+      token = { s:String => sb.append(s"Token($s),"); () },
+      delim = { s:String => sb.append(s"Delim($s),"); () },
+      trailingDelim = { s:String => sb.append(s"TrailingDelim($s),"); () }
     )
     sb.dropRight(1).append(")").result()
   }
