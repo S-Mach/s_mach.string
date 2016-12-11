@@ -7,8 +7,7 @@ v1,28-Nov-2014
 image:https://travis-ci.org/S-Mach/s_mach.string.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.string"]
 image:https://coveralls.io/repos/S-Mach/s_mach.string/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.string"]
 image:https://www.codacy.com/project/badge/a88e6b8b04b74d619077e3e538692487[Codacy Badge,link="https://www.codacy.com/public/lancegatlin/s_mach.string"]
-Docs: https://github.com/S-Mach/s_mach.string/2.11.x[2.11] https://github.com/S-Mach/s_mach.string/2.12.x[2.12]
-http://s-mach.github.io/s_mach.string/#s_mach.string.package[Scaladoc]
+Scaladocs: http://s-mach.github.io/s_mach.string/2.11.x/#s_mach.string.package[2.11] https://s-mach.github.io/s_mach.string/2.12.x/s_mach/string/index.html[2.12]
 
 +s_mach.string+ is an open-source Scala library that provides primitives for
 string manipulation beyond the standard library. s_mach.string supports
