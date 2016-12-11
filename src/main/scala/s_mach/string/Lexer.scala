@@ -23,15 +23,15 @@ package s_mach.string
  * A trait for a lexer that allows separating a string into "tokens" and
  * "delimiters". Each lexer defines tokens and delimiters differently. A whitespace
  * lexer assigns whitespace runs as delimiters and non-whitespace runs as
- * "tokens". A capitalization-based lexer creates tokens when capitalization
- * changes from lower case to upper case and produces no delimiters.
+ * tokens. A capitalization-based lexer creates tokens when capitalization
+ * changes from lower case to upper case but produces no delimiters.
  */
 trait Lexer {
 
   /**
    * Separate a string into tokens based on some boundary condition ignoring
    * any delimiter characters between any two tokens.
- *
+   *
    * @param s string to separate into tokens
    * @return Iterator of tokens
    */

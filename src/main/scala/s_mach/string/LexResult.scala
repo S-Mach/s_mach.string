@@ -19,16 +19,17 @@
 package s_mach.string
 
 /**
- * A trait for the lazy result of a lexing
+ * A trait for the lazy result of lexing
  */
 trait LexResult {
   /**
-   * Iterate over tokens and delimiter contained in the string
-   * @param leadingDelim function called if string contains leading delimiter (if any)
-   * @param token function called if string contains a token (if any)
-   * @param delim function called if string contains delimiter following a token (if
+   * Iterate over tokens and delimiters contained in the string
+   *
+   * @param leadingDelim function called once with leading delimiters (if any)
+   * @param token function called foreach token (if any)
+   * @param delim function called foreach delimiter following a token (if
    *             any)
-   * @param trailingDelim function called if string contains trailing delimiter (if
+   * @param trailingDelim function called once with trailing delimiters (if
    *                     any)
    */
   def foreach(
@@ -40,11 +41,12 @@ trait LexResult {
 
   /**
    * Map over token and delimiter contained in the string
-   * @param leadingDelim function called if string contains leading delimiter (if any)
-   * @param token function called if string contains a token (if any)
-   * @param delim function called if string contains delimiter following a token (if
+   *
+   * @param leadingDelim function called once with leading delimiters (if any)
+   * @param token function called foreach token (if any)
+   * @param delim function called foreach delimiter following a token (if
    *             any)
-   * @param trailingDelim function called if string contains trailing delimiter (if
+   * @param trailingDelim function called oce with trailing delimiters (if
    *                     any)
    * @return a string that is the result of concatenating the returned strings
    *         from all supplied functions
