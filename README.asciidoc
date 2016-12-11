@@ -69,7 +69,7 @@ string's structure (mapTokens, LexResult)
 ** +String.toLongOpt+
 ** +String.toIntOpt+
 ** +String.convert+
-** +String.printGrid+
+** +Indexed[[IndexedSeq[String]].printGrid+
 
 * Extract and create char group regex patterns using CharGroup, CharGroupPattern & CharGroupRegex
 

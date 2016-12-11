@@ -13,7 +13,7 @@ notifications:
     recipients:
     - lance.gatlin@s-mach.net
 script:
- - sbt coverage test coverageReport -J-Xmx4g
+ - sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport -J-Xmx4g
 after_success:
  - sbt coveralls
  - sbt codacyCoverage

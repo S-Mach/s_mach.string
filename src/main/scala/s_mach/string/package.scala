@@ -231,6 +231,26 @@ package object string {
       *
       * @return formatted grid string
       */
-    def printGrid : String = PrintGridImpl.printGrid(self)
+    def printGrid : String = PrintGridImpl.printGrid(
+      data = self,
+      colDelim = ' ',
+      colDelimCount = 1,
+      rowDelim = "\n"
+    )
+
+    /**
+      * Print a NxM formatted grid of strings padding cells with spaces as
+      * needed to left align cells
+      *
+      * @param colDelim char to delimit columns
+      * @param colDelimCount number of delim between columns
+      * @param rowDelim string to delimit rows (except for last)
+      * @return formatted grid string
+      */
+    def printGrid(
+      colDelim: Char,
+      colDelimCount: Int,
+      rowDelim: String = "\n"
+    ) : String = PrintGridImpl.printGrid(self,colDelim,colDelimCount,rowDelim)
   }
 }

@@ -19,33 +19,63 @@
 package s_mach.string.impl
 
 object PrintGridImpl {
-  // maybe make these configurable?
-  val colSep = " "
-  val rowSep = "\n"
+  private def cell(data: IndexedSeq[IndexedSeq[String]], rowIdx: Int, colIdx: Int) : String =
+    if(rowIdx < data.size) {
+      val row = data(rowIdx)
+      if(colIdx < row.size) {
+        row(colIdx)
+      } else {
+        ""
+      }
+    } else {
+      ""
+    }
+
+  private def appendRow(
+    sb: StringBuilder,
+    maxColWidths: IndexedSeq[Int],
+    colDelim: Char,
+    colDelimCount: Int,
+    rowDelim: String,
+    row: IndexedSeq[String]
+  ) : Unit = {
+    // all but last column
+    row.init.zipWithIndex.foreach { case (cell,colIdx) =>
+      val maxColWidth = maxColWidths(colIdx)
+      sb.append(cell)
+      val sepsNeeded = (maxColWidth - cell.length) + colDelimCount
+      for(_ <- 0 until sepsNeeded) {
+        sb.append(colDelim)
+      }
+    }
+    // last column
+    sb.append(row.last)
+    ()
+  }
 
   def printGrid[A](
-    data: IndexedSeq[IndexedSeq[String]]
+    data: IndexedSeq[IndexedSeq[String]],
+    colDelim: Char,
+    colDelimCount: Int,
+    rowDelim: String
   ) : String = {
     val rowCount = data.size
-    val colSepLen = colSep.length
     if(data.nonEmpty) {
-      val colCount = data.head.size
-      val maxColWidths = (0 until colCount).map { colIdx =>
-        (0 until rowCount).iterator.map(rowIdx => data(rowIdx)(colIdx).length).max
+      val maxColCount = data.head.size
+      val maxColWidths = (0 until maxColCount).map { colIdx =>
+        (0 until rowCount).iterator.map { rowIdx =>
+          cell(data,rowIdx,colIdx).length
+        }.max
       }
       val sb = new StringBuilder(512)
-      data.foreach { row =>
-        row.init.zipWithIndex.foreach { case (cell,colIdx) =>
-          val maxColWidth = maxColWidths(colIdx)
-          sb.append(cell)
-          val sepsNeeded = ((maxColWidth - cell.length) / colSepLen) + 1
-          for(_ <- 0 until sepsNeeded) {
-            sb.append(colSep)
-          }
-        }
-        sb.append(row.last)
-        sb.append(rowSep)
+      // all but last row
+      data.init.foreach { row =>
+        appendRow(sb, maxColWidths, colDelim, colDelimCount, rowDelim, row)
+        sb.append(rowDelim)
+        ()
       }
+      // last row
+      appendRow(sb, maxColWidths, colDelim, colDelimCount, rowDelim, data.last)
       sb.result()
     } else {
       ""

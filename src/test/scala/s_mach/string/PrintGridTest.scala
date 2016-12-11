@@ -25,13 +25,26 @@ class PrintGridTest extends FlatSpec with Matchers {
   "Grid.printGrid" should "print a formatted grid" in {
     IndexedSeq(
       IndexedSeq("a a","bb","c","d"),
-      IndexedSeq("d","eee","f","g"),
+      IndexedSeq("d","eee","f"),
       IndexedSeq("hh","i","jjjj","k")
     ).printGrid shouldBe
 """
 a a bb  c    d
-d   eee f    g
+d   eee f
 hh  i   jjjj k
-""".trim + "\n"
+""".trim
+  }
+
+  "Grid.printGrid()" should "print a formatted grid with custom formatting" in {
+    IndexedSeq(
+      IndexedSeq("a a","bb","c","d"),
+      IndexedSeq("d","eee","f","g"),
+      IndexedSeq("hh","i","jjjj","k")
+    ).printGrid('-',2,"|\n") shouldBe
+"""
+a a--bb---c-----d|
+d----eee--f-----g|
+hh---i----jjjj--k
+""".trim
   }
 }
