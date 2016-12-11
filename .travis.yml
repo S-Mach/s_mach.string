@@ -3,10 +3,11 @@ language: scala
 addons:
   hostname: short-hostname
 matrix:
- - scala: 2.12.1
-   env: JDK=oraclejdk8
- - scala: 2.11.8
-   env: JDK=openjdk6
+  include:
+   - scala: 2.12.1
+     env: JDK=oraclejdk8
+   - scala: 2.11.8
+     env: JDK=openjdk6
 notifications:
   email:
     recipients:
