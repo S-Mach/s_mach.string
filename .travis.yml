@@ -1,12 +1,12 @@
 language: scala
-scala:
-- 2.11.8
-- 2.12.1
 # This is a workaround for this issue: https://goo.gl/FexVa7
 addons:
   hostname: short-hostname
-jdk:
-- openjdk6
+matrix:
+ - scala: 2.12.1
+   env: JDK=oraclejdk8
+ - scala: 2.11.8
+   env: JDK=openjdk6
 notifications:
   email:
     recipients:
