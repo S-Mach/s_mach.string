@@ -23,7 +23,7 @@ variety of find-replace methods.
 ----
 libraryDependencies += "net.s_mach" %% "string" % "2.1.0"
 ----
-NOTE: +s_mach.string+ is available Scala 2.11 and 2.12
+NOTE: +s_mach.string+ is cross compiled for Scala 2.11 and 2.12
 
 == Versioning
 +s_mach.string+ uses semantic versioning (http://semver.org/). +s_mach.string+
